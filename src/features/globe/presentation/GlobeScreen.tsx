@@ -1,4 +1,4 @@
-import { useState, useMemo, Suspense, lazy } from 'react';
+import { useState, useMemo, Suspense, lazy, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { Navigation, MapPin } from 'lucide-react';
@@ -6,27 +6,39 @@ import { AppBar, BottomSheet, StatusChip } from '@/core/components';
 import { useGlobeData, GlobePlace } from './hooks/useGlobeData';
 import { cn } from '@/core/utils/cn';
 import { useThemeStore } from '@/core/theme/useThemeStore';
+import { useSearchStore } from '@/features/search/presentation/state/useSearchStore';
 
 const Globe = lazy(() => import('./components/Globe').then(m => ({ default: m.Globe })));
 
 export default function GlobeScreen() {
-
   const navigate = useNavigate();
   const places = useGlobeData();
   const { accentColor } = useThemeStore();
   const [selectedPlace, setSelectedPlace] = useState<GlobePlace | null>(null);
   
+  const { query, localResults } = useSearchStore();
+
   // Filters
   const [filterType, setFilterType] = useState<'all' | 'visited' | 'planning' | 'favorites'>('all');
 
   const filteredPlaces = useMemo(() => {
-    return places.filter(p => {
+    let result = places;
+    
+    // Apply global search filter
+    if (query.trim() !== '') {
+      const resultPlaceIds = new Set(localResults.places.map(p => p.uuid));
+      const resultCountryIds = new Set(localResults.countries.map(c => c.uuid));
+      result = result.filter(p => resultPlaceIds.has(p.uuid) || resultCountryIds.has(p.countryUuid));
+    }
+    
+    // Apply local status filter
+    return result.filter(p => {
       if (filterType === 'visited') return p.status === 'visited';
       if (filterType === 'planning') return p.status === 'planning';
       if (filterType === 'favorites') return p.isFavorite;
       return true;
     });
-  }, [places, filterType]);
+  }, [places, filterType, query, localResults]);
 
   return (
     <div className="h-full flex flex-col bg-canvas-black relative overflow-hidden">

@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Search, SlidersHorizontal, Globe2, Plus, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useHomeData, CountryViewModel, PlaceViewModel } from './hooks/useHomeData';
 import { CountryAccordion } from './components/CountryAccordion';
 import { CountryDialog } from './components/CountryDialog';
 import { PlaceDialog } from './components/PlaceDialog';
 import { ConfirmDialog, AppBar, EmptyState, LoadingIndicator, FAB } from '@/core/components';
 import { locationRepository } from '@/core/di/injection';
+import { useSearchStore } from '@/features/search/presentation/state/useSearchStore';
 
 export default function HomeScreen() {
   const { data: countries, isLoading } = useHomeData();
+  const navigate = useNavigate();
+  const { query, localResults, clearSearch } = useSearchStore();
   
   const [isCountryDialogOpen, setIsCountryDialogOpen] = useState(false);
   const [countryToEdit, setCountryToEdit] = useState<CountryViewModel | undefined>(undefined);
@@ -74,6 +78,24 @@ export default function HomeScreen() {
     });
     setIsConfirmOpen(true);
   };
+  
+  const filteredCountries = useMemo(() => {
+    if (!query.trim()) return countries;
+    
+    const resultCountryIds = new Set(localResults.countries.map(c => c.uuid));
+    const resultPlaceIds = new Set(localResults.places.map(p => p.uuid));
+    
+    return countries.map(c => {
+      // If country matches, keep all places? Or only matched places? Let's keep matched places
+      const filteredPlaces = c.places.filter(p => resultPlaceIds.has(p.id));
+      
+      return {
+        ...c,
+        places: filteredPlaces,
+        isMatched: resultCountryIds.has(c.id) || filteredPlaces.length > 0
+      };
+    }).filter(c => c.isMatched);
+  }, [countries, query, localResults]);
 
   return (
     <div className="min-h-full pb-24">
@@ -83,11 +105,11 @@ export default function HomeScreen() {
         leading={<Globe2 className="w-6 h-6 text-active-accent" style={{ color: 'var(--color-active-accent)' }} />}
         trailing={
           <div className="flex items-center gap-1 text-textMuted">
-            <button className="p-2 hover:text-white transition-colors focus:outline-none">
+            <button 
+              onClick={() => navigate('/search')}
+              className="p-2 hover:text-white transition-colors focus:outline-none"
+            >
               <Search className="w-5 h-5" />
-            </button>
-            <button className="p-2 hover:text-white transition-colors focus:outline-none">
-              <SlidersHorizontal className="w-5 h-5" />
             </button>
           </div>
         }
@@ -104,18 +126,29 @@ export default function HomeScreen() {
         >
           <div className="flex justify-between items-end mb-2">
             <h1 className="font-display text-3xl font-medium tracking-tight text-white">
-              Your Travel Journal
+              {query.trim() ? "Search Results" : "Your Travel Journal"}
             </h1>
-            <button
-              onClick={handleAddCountry}
-              className="text-sm font-medium hover:text-white transition-colors focus:outline-none"
-              style={{ color: 'var(--color-active-accent)' }}
-            >
-              + Country
-            </button>
+            {!query.trim() && (
+              <button
+                onClick={handleAddCountry}
+                className="text-sm font-medium hover:text-white transition-colors focus:outline-none"
+                style={{ color: 'var(--color-active-accent)' }}
+              >
+                + Country
+              </button>
+            )}
+            {query.trim() && (
+              <button
+                onClick={clearSearch}
+                className="text-sm font-medium hover:text-white transition-colors focus:outline-none"
+                style={{ color: 'var(--color-active-accent)' }}
+              >
+                Clear Search
+              </button>
+            )}
           </div>
           <p className="text-textMuted">
-            Collect places you want to visit.
+            {query.trim() ? `Showing results for "${query}"` : "Collect places you want to visit."}
           </p>
         </motion.section>
 
@@ -130,23 +163,25 @@ export default function HomeScreen() {
             <div className="py-12">
               <LoadingIndicator message="Loading your journal..." />
             </div>
-          ) : countries.length === 0 ? (
+          ) : filteredCountries.length === 0 ? (
             <EmptyState
               icon={<MapPin className="w-8 h-8" />}
-              title="No Countries Yet"
-              description="Start building your travel journal by adding the first country you want to visit."
+              title={query.trim() ? "No Results Found" : "No Countries Yet"}
+              description={query.trim() ? "No saved countries or places match your search." : "Start building your travel journal by adding the first country you want to visit."}
               action={
-                <button
-                  onClick={handleAddCountry}
-                  className="px-6 py-3 rounded-full font-medium text-canvas-black transition-transform active:scale-95 focus:outline-none"
-                  style={{ backgroundColor: 'var(--color-active-accent)' }}
-                >
-                  Add Your First Country
-                </button>
+                !query.trim() && (
+                  <button
+                    onClick={handleAddCountry}
+                    className="px-6 py-3 rounded-full font-medium text-canvas-black transition-transform active:scale-95 focus:outline-none"
+                    style={{ backgroundColor: 'var(--color-active-accent)' }}
+                  >
+                    Add Your First Country
+                  </button>
+                )
               }
             />
           ) : (
-            countries.map(country => (
+            filteredCountries.map(country => (
               <CountryAccordion 
                 key={country.id} 
                 country={country} 
@@ -162,7 +197,7 @@ export default function HomeScreen() {
       </main>
 
       {/* Floating Action Button */}
-      {countries.length > 0 && (
+      {countries.length > 0 && !query.trim() && (
         <FAB
           icon={<Plus className="w-6 h-6" />}
           onClick={() => handleAddPlace()}

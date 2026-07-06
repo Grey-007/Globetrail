@@ -31,8 +31,8 @@ export default function SearchScreen() {
   const [selectedResult, setSelectedResult] = useState<GlobalSearchResult | null>(null);
 
   useEffect(() => {
-    return () => clearSearch();
-  }, [clearSearch]);
+    // Keep search state persistent
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
