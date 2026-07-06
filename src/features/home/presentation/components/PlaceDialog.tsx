@@ -19,6 +19,8 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
   const [status, setStatus] = useState<PlaceStatus>('wishlist');
   const [countryId, setCountryId] = useState('');
   const [notes, setNotes] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -29,6 +31,8 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
       setStatus(placeToEdit?.status || 'wishlist');
       setCountryId(placeToEdit?.countryUuid || defaultCountryId || (countries.length > 0 ? countries[0].id : ''));
       setNotes(placeToEdit?.notes || '');
+      setLatitude(placeToEdit?.latitude ? placeToEdit.latitude.toString() : '');
+      setLongitude(placeToEdit?.longitude ? placeToEdit.longitude.toString() : '');
       setError('');
     }
   }, [isOpen, placeToEdit, defaultCountryId, countries]);
@@ -45,6 +49,9 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
       return;
     }
     
+    const lat = parseFloat(latitude) || 0;
+    const lng = parseFloat(longitude) || 0;
+
     if (placeToEdit) {
       const res = await locationRepository.updatePlace({
         ...placeToEdit,
@@ -54,6 +61,8 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
         status,
         countryUuid: countryId,
         notes: notes.trim(),
+        latitude: lat,
+        longitude: lng,
       });
       if (res.success === false) {
         setError(res.error.message);
@@ -68,8 +77,8 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
         countryUuid: countryId,
         notes: notes.trim(),
         isFavorite: false,
-        latitude: 0,
-        longitude: 0,
+        latitude: lat,
+        longitude: lng,
         description: '',
       });
       if (res.success === false) {
@@ -151,6 +160,31 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
                 {p}
               </button>
             ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-textMuted mb-1">Latitude</label>
+            <input
+              type="number"
+              step="any"
+              value={latitude}
+              onChange={e => setLatitude(e.target.value)}
+              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+              placeholder="e.g. 35.0116"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-textMuted mb-1">Longitude</label>
+            <input
+              type="number"
+              step="any"
+              value={longitude}
+              onChange={e => setLongitude(e.target.value)}
+              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+              placeholder="e.g. 135.7681"
+            />
           </div>
         </div>
 

@@ -1,25 +1,34 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
+import { AppBar, SearchBar, EmptyState } from '@/core/components';
 import { Search } from 'lucide-react';
 
 export default function SearchScreen() {
+  const [query, setQuery] = useState('');
+
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="p-4 md:p-6"
-    >
-      <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-textMuted" />
-        <input 
-          type="text" 
-          placeholder="Search global coordinates, cities..." 
-          className="w-full bg-card-surface border border-fine-border rounded-full py-4 pl-12 pr-4 text-white focus:outline-none focus:border-accent-steel transition-colors"
-          disabled
+    <div className="min-h-full pb-24">
+      <AppBar title="Search" centerTitle />
+      
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-4 md:p-6"
+      >
+        <SearchBar
+          value={query}
+          onChange={setQuery}
+          placeholder="Search global coordinates, cities..."
         />
-      </div>
-      <div className="mt-8 text-center text-textMuted">
-        Autocomplete Implementation Pending
-      </div>
-    </motion.div>
+        
+        <div className="mt-8">
+          <EmptyState
+            icon={<Search className="w-8 h-8" />}
+            title="Search Places"
+            description="Find your saved places, countries, or search for new destinations."
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 }

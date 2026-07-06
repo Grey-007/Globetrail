@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Edit3, Trash2, Heart, Share, MapPin, Calendar, Clock, Map, AlignLeft, Camera, LayoutGrid } from 'lucide-react';
+import { ArrowLeft, Edit3, Trash2, Heart, Share, MapPin, Calendar, Clock, Map, AlignLeft, Camera } from 'lucide-react';
 import { usePlaceDetails } from './hooks/usePlaceDetails';
 import { locationRepository } from '@/core/di/injection';
-import { ConfirmDialog } from '@/core/components/ConfirmDialog';
+import { ConfirmDialog, AppBar, StatusChip } from '@/core/components';
 import { PlaceDialog } from '@/features/home/presentation/components/PlaceDialog';
 import { cn } from '@/core/utils/cn';
 import { useHomeData } from '@/features/home/presentation/hooks/useHomeData';
@@ -70,38 +70,43 @@ export default function PlaceDetailsScreen() {
 
   return (
     <div className="min-h-screen bg-canvas-black text-white flex flex-col overflow-x-hidden">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-30 bg-canvas-black/80 backdrop-blur-md border-b border-fine-border px-4 h-16 flex items-center justify-between pt-safe">
-        <button 
-          onClick={() => navigate(-1)} 
-          className="p-2 -ml-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <div className="flex items-center gap-2">
+      {/* App Bar */}
+      <AppBar 
+        title=""
+        leading={
           <button 
-            onClick={toggleFavorite} 
-            className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+            onClick={() => navigate(-1)} 
+            className="p-2 -ml-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
           >
-            <Heart 
-              className={cn("w-5 h-5 transition-transform active:scale-90", place.isFavorite && "fill-current")} 
-              style={{ color: place.isFavorite ? 'var(--color-active-accent)' : undefined }}
-            />
+            <ArrowLeft className="w-6 h-6" />
           </button>
-          <button 
-            onClick={() => {}} 
-            className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
-          >
-            <Share className="w-5 h-5" />
-          </button>
-          <button 
-            onClick={() => setIsEditOpen(true)} 
-            className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
-          >
-            <Edit3 className="w-5 h-5" />
-          </button>
-        </div>
-      </header>
+        }
+        trailing={
+          <div className="flex items-center gap-1">
+            <button 
+              onClick={toggleFavorite} 
+              className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+            >
+              <Heart 
+                className={cn("w-5 h-5 transition-transform active:scale-90", place.isFavorite && "fill-current")} 
+                style={{ color: place.isFavorite ? 'var(--color-active-accent)' : undefined }}
+              />
+            </button>
+            <button 
+              onClick={() => {}} 
+              className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+            >
+              <Share className="w-5 h-5" />
+            </button>
+            <button 
+              onClick={() => setIsEditOpen(true)} 
+              className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+            >
+              <Edit3 className="w-5 h-5" />
+            </button>
+          </div>
+        }
+      />
 
       <main className="flex-1 p-4 pb-24 max-w-2xl mx-auto w-full space-y-8">
         
@@ -125,19 +130,14 @@ export default function PlaceDetailsScreen() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 pt-2">
-            <span className={cn(
-              "text-[10px] px-2.5 py-1 rounded-full font-bold tracking-wider uppercase border",
-              place.status === 'visited' 
-                ? 'bg-success/10 text-success border-success/20' 
-                : 'bg-white/5 text-textMuted border-white/10'
-            )}>
-              {place.status}
-            </span>
-            <span className={cn(
-              "text-[10px] px-2.5 py-1 rounded-full font-bold tracking-wider uppercase border bg-white/5 border-white/10",
-            )}>
-              {place.category}
-            </span>
+            <StatusChip 
+              status={place.status} 
+              variant={place.status === 'visited' ? 'visited' : 'wishlist'} 
+            />
+            <StatusChip 
+              status={place.category} 
+              variant="neutral" 
+            />
             <div className={cn(
               "flex items-center gap-1.5 px-2.5 py-1 rounded-full border bg-white/5 border-white/10",
             )}>

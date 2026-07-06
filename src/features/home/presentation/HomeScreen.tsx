@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Search, SlidersHorizontal, Globe2, Plus } from 'lucide-react';
+import { Search, SlidersHorizontal, Globe2, Plus, MapPin } from 'lucide-react';
 import { useHomeData, CountryViewModel, PlaceViewModel } from './hooks/useHomeData';
 import { CountryAccordion } from './components/CountryAccordion';
 import { CountryDialog } from './components/CountryDialog';
 import { PlaceDialog } from './components/PlaceDialog';
-import { ConfirmDialog } from '@/core/components/ConfirmDialog';
+import { ConfirmDialog, AppBar, EmptyState, LoadingIndicator, FAB } from '@/core/components';
 import { locationRepository } from '@/core/di/injection';
 
 export default function HomeScreen() {
@@ -78,20 +78,20 @@ export default function HomeScreen() {
   return (
     <div className="min-h-full pb-24">
       {/* App Bar */}
-      <header className="sticky top-0 z-10 bg-canvas-black/80 backdrop-blur-md border-b border-fine-border px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Globe2 className="w-6 h-6" style={{ color: 'var(--color-active-accent)' }} />
-          <span className="font-display font-semibold tracking-tight text-lg text-white">GlobeTrail</span>
-        </div>
-        <div className="flex items-center gap-3 text-textMuted">
-          <button className="p-2 hover:text-white transition-colors focus:outline-none">
-            <Search className="w-5 h-5" />
-          </button>
-          <button className="p-2 hover:text-white transition-colors focus:outline-none">
-            <SlidersHorizontal className="w-5 h-5" />
-          </button>
-        </div>
-      </header>
+      <AppBar
+        title="GlobeTrail"
+        leading={<Globe2 className="w-6 h-6 text-active-accent" style={{ color: 'var(--color-active-accent)' }} />}
+        trailing={
+          <div className="flex items-center gap-1 text-textMuted">
+            <button className="p-2 hover:text-white transition-colors focus:outline-none">
+              <Search className="w-5 h-5" />
+            </button>
+            <button className="p-2 hover:text-white transition-colors focus:outline-none">
+              <SlidersHorizontal className="w-5 h-5" />
+            </button>
+          </div>
+        }
+      />
 
       {/* Main Content */}
       <main className="p-4 md:p-6 max-w-2xl mx-auto">
@@ -127,18 +127,24 @@ export default function HomeScreen() {
           className="space-y-4"
         >
           {isLoading ? (
-            <div className="text-center text-textMuted py-8">Loading data...</div>
-          ) : countries.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-fine-border rounded-2xl">
-              <p className="text-textMuted mb-4">You haven't added any countries yet.</p>
-              <button
-                onClick={handleAddCountry}
-                className="px-6 py-3 rounded-full font-medium text-white transition-transform active:scale-95 focus:outline-none"
-                style={{ backgroundColor: 'var(--color-active-accent)' }}
-              >
-                Add Your First Country
-              </button>
+            <div className="py-12">
+              <LoadingIndicator message="Loading your journal..." />
             </div>
+          ) : countries.length === 0 ? (
+            <EmptyState
+              icon={<MapPin className="w-8 h-8" />}
+              title="No Countries Yet"
+              description="Start building your travel journal by adding the first country you want to visit."
+              action={
+                <button
+                  onClick={handleAddCountry}
+                  className="px-6 py-3 rounded-full font-medium text-canvas-black transition-transform active:scale-95 focus:outline-none"
+                  style={{ backgroundColor: 'var(--color-active-accent)' }}
+                >
+                  Add Your First Country
+                </button>
+              }
+            />
           ) : (
             countries.map(country => (
               <CountryAccordion 
@@ -157,17 +163,11 @@ export default function HomeScreen() {
 
       {/* Floating Action Button */}
       {countries.length > 0 && (
-        <motion.button 
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.3 }}
+        <FAB
+          icon={<Plus className="w-6 h-6" />}
           onClick={() => handleAddPlace()}
-          className="fixed bottom-24 right-6 w-14 h-14 rounded-2xl shadow-lg flex items-center justify-center text-white active:scale-95 transition-transform z-20 focus:outline-none"
-          style={{ backgroundColor: 'var(--color-active-accent)' }}
           aria-label="Add Place"
-        >
-          <Plus className="w-6 h-6" />
-        </motion.button>
+        />
       )}
 
       {/* Dialogs */}
