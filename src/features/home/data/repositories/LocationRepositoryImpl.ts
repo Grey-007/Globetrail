@@ -35,6 +35,18 @@ export class LocationRepositoryImpl implements LocationRepository {
     }
   }
 
+  async getPlaceById(uuid: string): Promise<Result<Place, Failure>> {
+    try {
+      const place = await this.localDataSource.getPlaceById(uuid);
+      if (!place) {
+        return failure(new DatabaseFailure('Place not found.'));
+      }
+      return success(place);
+    } catch (error) {
+      return failure(new DatabaseFailure(error instanceof Error ? error.message : 'Unknown error'));
+    }
+  }
+
   async createCountry(countryData: Omit<Country, 'uuid' | 'createdDate' | 'updatedDate' | 'version' | 'isDeleted'>): Promise<Result<Country, Failure>> {
     try {
       const now = new Date();
@@ -48,6 +60,18 @@ export class LocationRepositoryImpl implements LocationRepository {
       };
       const result = await this.localDataSource.createCountry(newCountry);
       return success(result);
+    } catch (error) {
+      return failure(new DatabaseFailure(error instanceof Error ? error.message : 'Unknown error'));
+    }
+  }
+
+  async getCountryById(uuid: string): Promise<Result<Country, Failure>> {
+    try {
+      const country = await this.localDataSource.getCountryById(uuid);
+      if (!country) {
+        return failure(new DatabaseFailure('Country not found.'));
+      }
+      return success(country);
     } catch (error) {
       return failure(new DatabaseFailure(error instanceof Error ? error.message : 'Unknown error'));
     }

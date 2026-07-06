@@ -10,12 +10,20 @@ export class LocationLocalDataSourceImpl implements LocationLocalDataSource {
     return this.db.countries.toArray();
   }
 
+  async getCountryById(uuid: string): Promise<Country | undefined> {
+    return this.db.countries.get(uuid);
+  }
+
   async getPlacesByCountry(countryUuid: string): Promise<Place[]> {
     return this.db.places.where('countryUuid').equals(countryUuid).toArray();
   }
 
   async getAllPlaces(): Promise<Place[]> {
     return this.db.places.toArray();
+  }
+
+  async getPlaceById(uuid: string): Promise<Place | undefined> {
+    return this.db.places.get(uuid);
   }
 
   async createCountry(country: Country): Promise<Country> {

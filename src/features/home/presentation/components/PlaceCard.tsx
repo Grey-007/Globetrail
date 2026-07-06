@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, MapPin, Mountain, Landmark, Building, Map, Pencil, Trash2 } from 'lucide-react';
 import { cn } from '@/core/utils/cn';
 import type { PlaceViewModel } from '../hooks/useHomeData';
@@ -9,6 +10,8 @@ export const PlaceCard: React.FC<{
   onEdit: (place: PlaceViewModel) => void;
   onDelete: (place: PlaceViewModel) => void;
 }> = ({ place, onEdit, onDelete }) => {
+  const navigate = useNavigate();
+  
   const getCategoryIcon = () => {
     switch (place.category.toLowerCase()) {
       case 'nature': return <Mountain className="w-5 h-5" />;
@@ -28,14 +31,16 @@ export const PlaceCard: React.FC<{
     }
   };
 
-  const toggleFavorite = async () => {
+  const toggleFavorite = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     await locationRepository.updatePlace({
       ...place.raw,
       isFavorite: !place.isFavorite
     });
   };
 
-  const toggleStatus = async () => {
+  const toggleStatus = async (e: React.MouseEvent) => {
+    e.stopPropagation();
     await locationRepository.updatePlace({
       ...place.raw,
       status: place.status === 'visited' ? 'wishlist' : 'visited'
@@ -43,7 +48,10 @@ export const PlaceCard: React.FC<{
   };
 
   return (
-    <div className="flex items-center gap-3 p-3 rounded-xl border border-fine-border bg-canvas-black relative overflow-hidden transition-colors hover:bg-white/[0.02] group">
+    <div 
+      onClick={() => navigate(`/place/${place.id}`)}
+      className="flex items-center gap-3 p-3 rounded-xl border border-fine-border bg-canvas-black relative overflow-hidden transition-colors hover:bg-white/[0.02] group cursor-pointer"
+    >
       {/* Priority Indicator */}
       <div className={cn("absolute left-0 top-0 bottom-0 w-1", getPriorityColor())} />
       
@@ -74,14 +82,14 @@ export const PlaceCard: React.FC<{
 
       <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
         <button 
-          onClick={() => onEdit(place)}
+          onClick={(e) => { e.stopPropagation(); onEdit(place); }}
           className="p-2 text-textMuted hover:text-white transition-colors focus:outline-none"
           aria-label="Edit place"
         >
           <Pencil className="w-4 h-4" />
         </button>
         <button 
-          onClick={() => onDelete(place)}
+          onClick={(e) => { e.stopPropagation(); onDelete(place); }}
           className="p-2 text-textMuted hover:text-error transition-colors focus:outline-none"
           aria-label="Delete place"
         >

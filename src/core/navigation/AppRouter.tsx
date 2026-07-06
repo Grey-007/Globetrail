@@ -5,6 +5,7 @@ import GlobeScreen from '@/features/globe/presentation/GlobeScreen';
 import SearchScreen from '@/features/search/presentation/SearchScreen';
 import StatisticsScreen from '@/features/statistics/presentation/StatisticsScreen';
 import SettingsScreen from '@/features/settings/presentation/SettingsScreen';
+import PlaceDetailsScreen from '@/features/places/presentation/PlaceDetailsScreen';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
         element: <SettingsScreen />
       }
     ]
+  },
+  {
+    path: "/place/:id",
+    element: <PlaceDetailsScreen />
   }
 ]);
 

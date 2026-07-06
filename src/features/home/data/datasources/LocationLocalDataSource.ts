@@ -3,8 +3,10 @@ import { Place } from '../../domain/entities/Place';
 
 export interface LocationLocalDataSource {
   getCountries(): Promise<Country[]>;
+  getCountryById(uuid: string): Promise<Country | undefined>;
   getPlacesByCountry(countryUuid: string): Promise<Place[]>;
   getAllPlaces(): Promise<Place[]>;
+  getPlaceById(uuid: string): Promise<Place | undefined>;
 
   createCountry(country: Country): Promise<Country>;
   updateCountry(country: Country): Promise<Country>;

@@ -24,9 +24,11 @@ export interface LocationRepository {
    * Retrieves all places saved in the database across all countries.
    */
   getAllPlaces(): Promise<Result<Place[], Failure>>;
+  getPlaceById(uuid: string): Promise<Result<Place, Failure>>;
 
   // Country Management
   createCountry(country: Omit<Country, 'uuid' | 'createdDate' | 'updatedDate' | 'version' | 'isDeleted'>): Promise<Result<Country, Failure>>;
+  getCountryById(uuid: string): Promise<Result<Country, Failure>>;
   updateCountry(country: Country): Promise<Result<Country, Failure>>;
   deleteCountry(uuid: string): Promise<Result<void, Failure>>;
 
