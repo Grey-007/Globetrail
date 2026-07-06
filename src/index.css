@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Custom Color Tokens */
+  --color-canvas-black: #000000;
+  --color-slate-gray: #121212;
+  --color-card-surface: #0A0A0A;
+  --color-fine-border: #222222;
+  
+  --color-accent-steel: #8E8E93;
+  --color-accent-ice: #A1C4FD;
+  --color-accent-sage: #8FBC8F;
+  --color-accent-coral: #FF7F50;
+  --color-accent-teal: #008080;
+}
+
+@layer base {
+  body {
+    @apply bg-canvas-black text-white font-sans antialiased selection:bg-accent-steel/30;
+  }
+
+  /* When AMOLED is disabled, we will apply a class to the html or body tag to shift to slate gray */
+  .theme-slate body {
+    @apply bg-slate-gray;
+  }
+}

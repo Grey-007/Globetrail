@@ -1,0 +1,6 @@
+{
+  "name": "GlobeTrail",
+  "description": "A travel planning and exploration companion to organize saved places by country and visualize them on an interactive 3D globe.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
