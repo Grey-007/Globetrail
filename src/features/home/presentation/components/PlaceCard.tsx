@@ -43,7 +43,7 @@ export const PlaceCard: React.FC<{
     e.stopPropagation();
     await locationRepository.updatePlace({
       ...place.raw,
-      status: place.status === 'visited' ? 'wishlist' : 'visited'
+      status: place.status === 'visited' ? 'planning' : 'visited'
     });
   };
 

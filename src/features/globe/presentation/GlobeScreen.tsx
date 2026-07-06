@@ -1,26 +1,28 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense, lazy } from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { Navigation, MapPin } from 'lucide-react';
 import { AppBar, BottomSheet, StatusChip } from '@/core/components';
-import { Globe } from './components/Globe';
 import { useGlobeData, GlobePlace } from './hooks/useGlobeData';
 import { cn } from '@/core/utils/cn';
 import { useThemeStore } from '@/core/theme/useThemeStore';
 
+const Globe = lazy(() => import('./components/Globe').then(m => ({ default: m.Globe })));
+
 export default function GlobeScreen() {
+
   const navigate = useNavigate();
   const places = useGlobeData();
   const { accentColor } = useThemeStore();
   const [selectedPlace, setSelectedPlace] = useState<GlobePlace | null>(null);
   
   // Filters
-  const [filterType, setFilterType] = useState<'all' | 'visited' | 'wishlist' | 'favorites'>('all');
+  const [filterType, setFilterType] = useState<'all' | 'visited' | 'planning' | 'favorites'>('all');
 
   const filteredPlaces = useMemo(() => {
     return places.filter(p => {
       if (filterType === 'visited') return p.status === 'visited';
-      if (filterType === 'wishlist') return p.status === 'wishlist';
+      if (filterType === 'planning') return p.status === 'planning';
       if (filterType === 'favorites') return p.isFavorite;
       return true;
     });
@@ -36,7 +38,7 @@ export default function GlobeScreen() {
         
         {/* Filters */}
         <div className="px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar pointer-events-auto">
-          {(['all', 'visited', 'wishlist', 'favorites'] as const).map(f => (
+          {(['all', 'visited', 'planning', 'favorites'] as const).map(f => (
             <button
               key={f}
               onClick={() => setFilterType(f)}
@@ -55,11 +57,17 @@ export default function GlobeScreen() {
       </div>
 
       <div className="flex-1 w-full relative">
-        <Globe 
-          places={places} 
-          filteredPlaces={filteredPlaces}
-          onPinClick={setSelectedPlace} 
-        />
+        <Suspense fallback={
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+          </div>
+        }>
+          <Globe 
+            places={places} 
+            filteredPlaces={filteredPlaces}
+            onPinClick={setSelectedPlace} 
+          />
+        </Suspense>
       </div>
 
       <BottomSheet
@@ -77,7 +85,7 @@ export default function GlobeScreen() {
             <div className="flex flex-wrap gap-2">
               <StatusChip 
                 status={selectedPlace.status} 
-                variant={selectedPlace.status === 'visited' ? 'visited' : 'wishlist'} 
+                variant={selectedPlace.status === 'visited' ? 'visited' : 'planning'} 
               />
               <StatusChip 
                 status={selectedPlace.category} 

@@ -1,26 +1,29 @@
 import React, { useRef, useEffect, useState } from 'react';
 import GlobeGL from 'react-globe.gl';
-import { useThemeStore } from '@/core/theme/useThemeStore';
+import { useThemeStore, getAccentColorHex } from '@/core/theme/useThemeStore';
 import { Place } from '@/features/home/domain/entities/Place';
+import { GlobePlace } from '../hooks/useGlobeData';
 import { useWindowSize } from '@/core/hooks/useWindowSize';
 import { LocateFixed, ZoomIn, ZoomOut } from 'lucide-react';
 
 interface GlobeComponentProps {
-  places: Place[];
-  onPinClick: (place: Place) => void;
-  filteredPlaces?: Place[]; // if we want to show all but highlight filtered, or only show filtered
+  places: GlobePlace[];
+  onPinClick: (place: GlobePlace) => void;
+  filteredPlaces?: GlobePlace[]; // if we want to show all but highlight filtered, or only show filtered
 }
 
 export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filteredPlaces = places }) => {
-  const globeEl = useRef<any>();
+  const globeEl = useRef<any>(null);
   const { accentColor } = useThemeStore();
   const { width, height } = useWindowSize();
   
+  const accentHex = getAccentColorHex(accentColor);
+  
   // Custom marker generator
-  const getMarkerHtml = (place: Place) => {
+  const getMarkerHtml = (place: GlobePlace) => {
     const el = document.createElement('div');
     const isFavorite = place.isFavorite;
-    const color = isFavorite ? `var(--color-accent-${accentColor})` : '#ffffff';
+    const color = isFavorite ? accentHex : '#ffffff';
     
     // Create a beautiful pin
     el.innerHTML = `
@@ -86,7 +89,7 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
         ref={globeEl}
         width={width}
         height={height - 64} // subtract bottom nav height roughly
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
+        globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
         backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
         htmlElementsData={filteredPlaces}
@@ -94,7 +97,7 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
         htmlLat="latitude"
         htmlLng="longitude"
         htmlAltitude={0.01}
-        atmosphereColor={`var(--color-accent-${accentColor})`}
+        atmosphereColor={accentHex}
         atmosphereAltitude={0.15}
       />
       

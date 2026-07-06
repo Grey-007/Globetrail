@@ -3,7 +3,7 @@ import { cn } from '@/core/utils/cn';
 
 interface StatusChipProps {
   status: string;
-  variant?: 'visited' | 'wishlist' | 'neutral' | 'error' | 'warning' | 'favorite';
+  variant?: 'visited' | 'planning' | 'booked' | 'archived' | 'neutral' | 'error' | 'warning' | 'favorite';
   className?: string;
   size?: 'sm' | 'md';
 }
@@ -12,7 +12,9 @@ export function StatusChip({ status, variant = 'neutral', className, size = 'sm'
   const getVariantStyles = () => {
     switch (variant) {
       case 'visited': return 'bg-success/10 text-success border-success/20';
-      case 'wishlist': return 'bg-white/5 text-textMuted border-white/10';
+      case 'planning': return 'bg-white/5 text-textMuted border-white/10';
+      case 'booked': return 'bg-accent-blue/10 text-accent-blue border-accent-blue/20';
+      case 'archived': return 'bg-white/5 text-textMuted border-white/5 opacity-50';
       case 'error': return 'bg-error/10 text-error border-error/20';
       case 'warning': return 'bg-warning/10 text-warning border-warning/20';
       case 'favorite': return 'bg-white/10 text-white border-white/20';

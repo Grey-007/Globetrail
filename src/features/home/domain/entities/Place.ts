@@ -1,5 +1,5 @@
 export type Priority = 'high' | 'medium' | 'low';
-export type PlaceStatus = 'visited' | 'wishlist';
+export type PlaceStatus = 'planning' | 'booked' | 'visited' | 'archived';
 
 /**
  * Domain entity representing a Place within a Country.
@@ -17,7 +17,15 @@ export interface Place {
   readonly externalId?: string;
   readonly category: string; // Added to map mock data
   readonly description: string;
-  readonly notes: string;
+  readonly notes: string; // Used for markdown travel journal
+  
+  // Travel Journal specific fields
+  readonly visitDate?: Date;
+  readonly futureTripDate?: Date;
+  readonly bestTimeToVisit?: string;
+  readonly estimatedBudget?: string;
+  readonly travelCompanions?: string[]; // future-ready
+  
   readonly priority: Priority;
   readonly status: PlaceStatus;
   readonly isFavorite: boolean;

@@ -41,16 +41,16 @@ export default function AppShell() {
   const isAnyTabActive = navItems.some(item => isTabActive(item.to));
 
   return (
-    <div className={cn(
-      "min-h-screen w-full flex flex-col font-sans transition-colors duration-300",
-      amoledMode ? "bg-canvas-black text-white" : "bg-slate-gray text-white"
-    )}>
-      <div 
-        className="flex-1 relative overflow-hidden"
-        style={{
-          '--color-active-accent': `var(--color-accent-${accentColor})`
-        } as React.CSSProperties}
-      >
+    <div 
+      className={cn(
+        "min-h-screen w-full flex flex-col font-sans transition-colors duration-300",
+        amoledMode ? "bg-canvas-black text-white" : "bg-slate-gray text-white"
+      )}
+      style={{
+        '--color-active-accent': `var(--color-accent-${accentColor})`
+      } as React.CSSProperties}
+    >
+      <div className="flex-1 relative overflow-hidden">
         {/* Tab Screens - Always mounted to preserve state */}
         <React.Suspense fallback={<div className="h-full w-full bg-canvas-black" />}>
           <TabContainer isActive={isTabActive('/')}>

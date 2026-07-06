@@ -1,5 +1,5 @@
 export type PlacePriority = 'high' | 'medium' | 'low';
-export type PlaceStatus = 'wishlist' | 'visited';
+export type PlaceStatus = 'planning' | 'visited';
 
 export interface MockPlace {
   id: string;
@@ -29,7 +29,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Tokyo',
         category: 'City',
         isFavorite: true,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'high',
       },
       {
@@ -45,7 +45,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Osaka',
         category: 'Food',
         isFavorite: false,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'medium',
       },
       {
@@ -53,7 +53,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Mount Fuji',
         category: 'Nature',
         isFavorite: true,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'high',
       },
       {
@@ -61,7 +61,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Nara',
         category: 'Nature',
         isFavorite: false,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'low',
       },
     ],
@@ -84,7 +84,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Lofoten',
         category: 'Nature',
         isFavorite: true,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'high',
       },
       {
@@ -92,7 +92,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Bergen',
         category: 'City',
         isFavorite: false,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'medium',
       },
     ],
@@ -107,7 +107,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Leh',
         category: 'Nature',
         isFavorite: true,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'high',
       },
       {
@@ -123,7 +123,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Darjeeling',
         category: 'Nature',
         isFavorite: true,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'high',
       },
       {
@@ -131,7 +131,7 @@ export const mockCountries: MockCountry[] = [
         name: 'Meghalaya',
         category: 'Nature',
         isFavorite: true,
-        status: 'wishlist',
+        status: 'planning',
         priority: 'high',
       },
     ],

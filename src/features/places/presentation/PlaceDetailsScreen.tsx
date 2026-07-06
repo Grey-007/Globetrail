@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Edit3, Trash2, Heart, Share, MapPin, Calendar, Clock, Map, AlignLeft, Camera } from 'lucide-react';
+import { ArrowLeft, Edit3, Trash2, Heart, Share, MapPin, Calendar, Clock, Map, AlignLeft, Camera, Paperclip } from 'lucide-react';
 import { usePlaceDetails } from './hooks/usePlaceDetails';
 import { locationRepository } from '@/core/di/injection';
 import { ConfirmDialog, AppBar, StatusChip } from '@/core/components';
 import { PlaceDialog } from '@/features/home/presentation/components/PlaceDialog';
 import { cn } from '@/core/utils/cn';
 import { useHomeData } from '@/features/home/presentation/hooks/useHomeData';
+
+import { TravelJournalEditor } from './components/TravelJournalEditor';
+import { PhotoGallery } from './components/PhotoGallery';
 
 export default function PlaceDetailsScreen() {
   const { id } = useParams();
@@ -132,7 +135,7 @@ export default function PlaceDetailsScreen() {
           <div className="flex flex-wrap items-center gap-2 pt-2">
             <StatusChip 
               status={place.status} 
-              variant={place.status === 'visited' ? 'visited' : 'wishlist'} 
+              variant={place.status as any} 
             />
             <StatusChip 
               status={place.category} 
@@ -157,21 +160,6 @@ export default function PlaceDetailsScreen() {
           className="bg-card-surface border border-fine-border rounded-2xl p-5 space-y-6"
         >
           <div>
-            <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-              <AlignLeft className="w-4 h-4 text-textMuted" /> Notes
-            </h3>
-            {place.notes ? (
-              <p className="text-textMuted whitespace-pre-wrap leading-relaxed text-sm">
-                {place.notes}
-              </p>
-            ) : (
-              <p className="text-textMuted/50 text-sm italic">
-                No notes added. Edit place to add notes.
-              </p>
-            )}
-          </div>
-
-          <div>
              <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
                Tags
              </h3>
@@ -191,36 +179,39 @@ export default function PlaceDetailsScreen() {
             </div>
             <div>
               <span className="text-xs text-textMuted flex items-center gap-1.5 mb-1">
-                <Clock className="w-3.5 h-3.5" /> Last Updated
+                <Clock className="w-3.5 h-3.5" /> Last Edited
               </span>
               <p className="text-sm font-medium">{formatDate(place.updatedDate)}</p>
             </div>
+            {place.visitDate && (
+              <div>
+                <span className="text-xs text-textMuted flex items-center gap-1.5 mb-1">
+                  <Calendar className="w-3.5 h-3.5" /> Visited
+                </span>
+                <p className="text-sm font-medium">{formatDate(place.visitDate)}</p>
+              </div>
+            )}
+            {place.futureTripDate && (
+              <div>
+                <span className="text-xs text-textMuted flex items-center gap-1.5 mb-1">
+                  <Calendar className="w-3.5 h-3.5" /> Future Trip
+                </span>
+                <p className="text-sm font-medium">{formatDate(place.futureTripDate)}</p>
+              </div>
+            )}
           </div>
         </motion.section>
 
-        {/* Photos Placeholder */}
+        {/* Photos */}
         <motion.section
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white tracking-wide flex items-center gap-2">
-              <Camera className="w-5 h-5 text-textMuted" /> Photos
-            </h3>
-            <button className="text-sm text-textMuted hover:text-white transition-colors">
-              + Add
-            </button>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div className="aspect-square bg-card-surface border border-dashed border-fine-border rounded-xl flex flex-col items-center justify-center text-textMuted hover:bg-white/[0.02] transition-colors cursor-pointer">
-              <Camera className="w-6 h-6 mb-2 opacity-50" />
-              <span className="text-xs font-medium">Add Photo</span>
-            </div>
-          </div>
+          <PhotoGallery placeUuid={place.uuid} />
         </motion.section>
 
-        {/* Travel Journal Placeholder */}
+        {/* Travel Journal */}
         <motion.section
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -230,14 +221,9 @@ export default function PlaceDetailsScreen() {
             <h3 className="text-lg font-semibold text-white tracking-wide flex items-center gap-2">
               <AlignLeft className="w-5 h-5 text-textMuted" /> Travel Journal
             </h3>
-            <button className="text-sm text-textMuted hover:text-white transition-colors">
-              + Entry
-            </button>
           </div>
-          <div className="bg-card-surface border border-dashed border-fine-border rounded-xl p-6 text-center">
-            <p className="text-textMuted text-sm mb-2">No journal entries yet.</p>
-            <p className="text-textMuted/60 text-xs">Jot down memories, itineraries, or things to do.</p>
-          </div>
+          
+          <TravelJournalEditor place={place} />
         </motion.section>
 
         {/* Location / Map Placeholder */}
@@ -263,6 +249,26 @@ export default function PlaceDetailsScreen() {
             )}
             
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 pointer-events-none" />
+          </div>
+        </motion.section>
+
+        {/* Attachments Placeholder */}
+        <motion.section
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-white tracking-wide flex items-center gap-2">
+              <Paperclip className="w-5 h-5 text-textMuted" /> Attachments
+            </h3>
+            <button className="text-sm text-textMuted hover:text-white transition-colors">
+              + Add
+            </button>
+          </div>
+          <div className="bg-card-surface border border-dashed border-fine-border rounded-xl p-6 text-center">
+            <p className="text-textMuted text-sm mb-2">No documents attached.</p>
+            <p className="text-textMuted/60 text-xs">PDFs, tickets, and bookings coming soon.</p>
           </div>
         </motion.section>
 

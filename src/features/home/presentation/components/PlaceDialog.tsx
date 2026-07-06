@@ -10,32 +10,41 @@ interface PlaceDialogProps {
   placeToEdit?: Place;
   countries: CountryViewModel[];
   defaultCountryId?: string;
+  initialData?: {
+    name?: string;
+    latitude?: string;
+    longitude?: string;
+  };
 }
 
-export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, placeToEdit, countries, defaultCountryId }) => {
+export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, placeToEdit, countries, defaultCountryId, initialData }) => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('City');
   const [priority, setPriority] = useState<Priority>('medium');
-  const [status, setStatus] = useState<PlaceStatus>('wishlist');
+  const [status, setStatus] = useState<PlaceStatus>('planning');
   const [countryId, setCountryId] = useState('');
   const [notes, setNotes] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [visitDate, setVisitDate] = useState('');
+  const [futureTripDate, setFutureTripDate] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (isOpen) {
-      setName(placeToEdit?.name || '');
+      setName(placeToEdit?.name || initialData?.name || '');
       setCategory(placeToEdit?.category || 'City');
       setPriority(placeToEdit?.priority || 'medium');
-      setStatus(placeToEdit?.status || 'wishlist');
+      setStatus(placeToEdit?.status || 'planning');
       setCountryId(placeToEdit?.countryUuid || defaultCountryId || (countries.length > 0 ? countries[0].id : ''));
       setNotes(placeToEdit?.notes || '');
-      setLatitude(placeToEdit?.latitude ? placeToEdit.latitude.toString() : '');
-      setLongitude(placeToEdit?.longitude ? placeToEdit.longitude.toString() : '');
+      setLatitude(placeToEdit?.latitude ? placeToEdit.latitude.toString() : initialData?.latitude || '');
+      setLongitude(placeToEdit?.longitude ? placeToEdit.longitude.toString() : initialData?.longitude || '');
+      setVisitDate(placeToEdit?.visitDate ? new Date(placeToEdit.visitDate).toISOString().split('T')[0] : '');
+      setFutureTripDate(placeToEdit?.futureTripDate ? new Date(placeToEdit.futureTripDate).toISOString().split('T')[0] : '');
       setError('');
     }
-  }, [isOpen, placeToEdit, defaultCountryId, countries]);
+  }, [isOpen, placeToEdit, defaultCountryId, countries, initialData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +72,8 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
         notes: notes.trim(),
         latitude: lat,
         longitude: lng,
+        visitDate: visitDate ? new Date(visitDate) : undefined,
+        futureTripDate: futureTripDate ? new Date(futureTripDate) : undefined,
       });
       if (res.success === false) {
         setError(res.error.message);
@@ -80,6 +91,8 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
         latitude: lat,
         longitude: lng,
         description: '',
+        visitDate: visitDate ? new Date(visitDate) : undefined,
+        futureTripDate: futureTripDate ? new Date(futureTripDate) : undefined,
       });
       if (res.success === false) {
         setError(res.error.message);
@@ -141,8 +154,10 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
               onChange={e => setStatus(e.target.value as PlaceStatus)}
               className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors appearance-none"
             >
-              <option value="wishlist">Wishlist</option>
+              <option value="planning">Planning</option>
+              <option value="booked">Booked</option>
               <option value="visited">Visited</option>
+              <option value="archived">Archived</option>
             </select>
           </div>
         </div>
@@ -188,13 +203,34 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
           </div>
         </div>
 
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-textMuted mb-1">Visit Date (Optional)</label>
+            <input
+              type="date"
+              value={visitDate}
+              onChange={e => setVisitDate(e.target.value)}
+              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors [color-scheme:dark]"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-textMuted mb-1">Future Trip Date (Optional)</label>
+            <input
+              type="date"
+              value={futureTripDate}
+              onChange={e => setFutureTripDate(e.target.value)}
+              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors [color-scheme:dark]"
+            />
+          </div>
+        </div>
+
         <div>
-          <label className="block text-sm font-medium text-textMuted mb-1">Notes (Optional)</label>
+          <label className="block text-sm font-medium text-textMuted mb-1">Brief Description (Optional)</label>
           <textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
             className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors min-h-[80px] resize-none"
-            placeholder="Add any specific notes or ideas..."
+            placeholder="Add any specific notes or ideas... (You can add full markdown notes in the place details screen)"
           />
         </div>
 
