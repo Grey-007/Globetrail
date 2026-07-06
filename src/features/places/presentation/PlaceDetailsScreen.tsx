@@ -23,18 +23,18 @@ export default function PlaceDetailsScreen() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-canvas-black text-white flex flex-col">
-        <div className="flex-1 flex items-center justify-center text-textMuted">Loading...</div>
+      <div className="min-h-screen bg-canvas text-text-main flex flex-col">
+        <div className="flex-1 flex items-center justify-center text-text-muted">Loading...</div>
       </div>
     );
   }
 
   if (!place || !country) {
     return (
-      <div className="min-h-screen bg-canvas-black text-white flex flex-col">
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 text-textMuted">
+      <div className="min-h-screen bg-canvas text-text-main flex flex-col">
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 text-text-muted">
           <p>Place not found.</p>
-          <button onClick={() => navigate(-1)} className="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors">
+          <button onClick={() => navigate(-1)} className="px-4 py-2 deboss rounded-lg hover:opacity-80 transition-colors">
             Go Back
           </button>
         </div>
@@ -72,14 +72,14 @@ export default function PlaceDetailsScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas-black text-white flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-canvas text-text-main flex flex-col overflow-x-hidden">
       {/* App Bar */}
       <AppBar 
         title=""
         leading={
           <button 
             onClick={() => navigate(-1)} 
-            className="p-2 -ml-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+            className="p-2 -ml-2 rounded-full text-text-muted hover:text-text-main transition-colors focus:outline-none"
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
@@ -88,7 +88,7 @@ export default function PlaceDetailsScreen() {
           <div className="flex items-center gap-1">
             <button 
               onClick={toggleFavorite} 
-              className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+              className="p-2 rounded-full text-text-muted hover:text-text-main transition-colors focus:outline-none"
             >
               <Heart 
                 className={cn("w-5 h-5 transition-transform active:scale-90", place.isFavorite && "fill-current")} 
@@ -97,13 +97,13 @@ export default function PlaceDetailsScreen() {
             </button>
             <button 
               onClick={() => {}} 
-              className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+              className="p-2 rounded-full text-text-muted hover:text-text-main transition-colors focus:outline-none"
             >
               <Share className="w-5 h-5" />
             </button>
             <button 
               onClick={() => setIsEditOpen(true)} 
-              className="p-2 rounded-full text-textMuted hover:text-white transition-colors focus:outline-none"
+              className="p-2 rounded-full text-text-muted hover:text-text-main transition-colors focus:outline-none"
             >
               <Edit3 className="w-5 h-5" />
             </button>
@@ -122,10 +122,10 @@ export default function PlaceDetailsScreen() {
           <div className="flex items-center gap-3">
             <span className="text-4xl">{country.flagEmoji}</span>
             <div>
-              <h1 className="font-display text-3xl font-semibold tracking-tight text-white mb-1">
+              <h1 className="font-display text-3xl font-semibold tracking-tight text-text-main mb-1">
                 {place.name}
               </h1>
-              <div className="text-textMuted flex items-center gap-2">
+              <div className="text-text-muted flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
                 <span>{country.countryName}</span>
               </div>
@@ -142,10 +142,10 @@ export default function PlaceDetailsScreen() {
               variant="neutral" 
             />
             <div className={cn(
-              "flex items-center gap-1.5 px-2.5 py-1 rounded-full border bg-white/5 border-white/10",
+              "flex items-center gap-1.5 px-2.5 py-1 rounded-full border deboss border-border",
             )}>
               <div className={cn("w-2 h-2 rounded-full", getPriorityColor().split(' ')[0])} />
-              <span className="text-[10px] font-bold tracking-wider uppercase text-textMuted">
+              <span className="text-[10px] font-bold tracking-wider uppercase text-text-muted">
                 {place.priority} Priority
               </span>
             </div>
@@ -157,35 +157,35 @@ export default function PlaceDetailsScreen() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-card-surface border border-fine-border rounded-2xl p-5 space-y-6"
+          className="bg-card border border-border rounded-2xl p-5 space-y-6"
         >
           <div>
-             <h3 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
+             <h3 className="text-sm font-semibold text-text-main mb-2 flex items-center gap-2">
                Tags
              </h3>
              <div className="flex flex-wrap gap-2">
-               <button className="text-xs px-3 py-1 rounded-full border border-dashed border-fine-border text-textMuted hover:text-white transition-colors">
+               <button className="text-xs px-3 py-1 rounded-full border border-dashed border-border text-text-muted hover:text-text-main transition-colors">
                  + Add Tag
                </button>
              </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-fine-border/50">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/50">
             <div>
-              <span className="text-xs text-textMuted flex items-center gap-1.5 mb-1">
+              <span className="text-xs text-text-muted flex items-center gap-1.5 mb-1">
                 <Calendar className="w-3.5 h-3.5" /> Added
               </span>
               <p className="text-sm font-medium">{formatDate(place.createdDate)}</p>
             </div>
             <div>
-              <span className="text-xs text-textMuted flex items-center gap-1.5 mb-1">
+              <span className="text-xs text-text-muted flex items-center gap-1.5 mb-1">
                 <Clock className="w-3.5 h-3.5" /> Last Edited
               </span>
               <p className="text-sm font-medium">{formatDate(place.updatedDate)}</p>
             </div>
             {place.visitDate && (
               <div>
-                <span className="text-xs text-textMuted flex items-center gap-1.5 mb-1">
+                <span className="text-xs text-text-muted flex items-center gap-1.5 mb-1">
                   <Calendar className="w-3.5 h-3.5" /> Visited
                 </span>
                 <p className="text-sm font-medium">{formatDate(place.visitDate)}</p>
@@ -193,7 +193,7 @@ export default function PlaceDetailsScreen() {
             )}
             {place.futureTripDate && (
               <div>
-                <span className="text-xs text-textMuted flex items-center gap-1.5 mb-1">
+                <span className="text-xs text-text-muted flex items-center gap-1.5 mb-1">
                   <Calendar className="w-3.5 h-3.5" /> Future Trip
                 </span>
                 <p className="text-sm font-medium">{formatDate(place.futureTripDate)}</p>
@@ -218,8 +218,8 @@ export default function PlaceDetailsScreen() {
           transition={{ delay: 0.25 }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white tracking-wide flex items-center gap-2">
-              <AlignLeft className="w-5 h-5 text-textMuted" /> Travel Journal
+            <h3 className="text-lg font-semibold text-text-main tracking-wide flex items-center gap-2">
+              <AlignLeft className="w-5 h-5 text-text-muted" /> Travel Journal
             </h3>
           </div>
           
@@ -233,11 +233,11 @@ export default function PlaceDetailsScreen() {
           transition={{ delay: 0.3 }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white tracking-wide flex items-center gap-2">
-              <Map className="w-5 h-5 text-textMuted" /> Location
+            <h3 className="text-lg font-semibold text-text-main tracking-wide flex items-center gap-2">
+              <Map className="w-5 h-5 text-text-muted" /> Location
             </h3>
           </div>
-          <div className="h-48 bg-card-surface border border-fine-border rounded-xl flex flex-col items-center justify-center text-textMuted relative overflow-hidden group">
+          <div className="h-48 bg-card border border-border rounded-xl flex flex-col items-center justify-center text-text-muted relative overflow-hidden group">
             <Map className="w-8 h-8 mb-3 opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
             <span className="text-sm font-medium z-10 relative">Map Integration Coming Soon</span>
             
@@ -259,16 +259,16 @@ export default function PlaceDetailsScreen() {
           transition={{ delay: 0.35 }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white tracking-wide flex items-center gap-2">
-              <Paperclip className="w-5 h-5 text-textMuted" /> Attachments
+            <h3 className="text-lg font-semibold text-text-main tracking-wide flex items-center gap-2">
+              <Paperclip className="w-5 h-5 text-text-muted" /> Attachments
             </h3>
-            <button className="text-sm text-textMuted hover:text-white transition-colors">
+            <button className="text-sm text-text-muted hover:text-text-main transition-colors">
               + Add
             </button>
           </div>
-          <div className="bg-card-surface border border-dashed border-fine-border rounded-xl p-6 text-center">
-            <p className="text-textMuted text-sm mb-2">No documents attached.</p>
-            <p className="text-textMuted/60 text-xs">PDFs, tickets, and bookings coming soon.</p>
+          <div className="bg-card border border-dashed border-border rounded-xl p-6 text-center">
+            <p className="text-text-muted text-sm mb-2">No documents attached.</p>
+            <p className="text-text-muted/60 text-xs">PDFs, tickets, and bookings coming soon.</p>
           </div>
         </motion.section>
 

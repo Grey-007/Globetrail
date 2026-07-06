@@ -40,13 +40,13 @@ export const TravelJournalEditor: React.FC<TravelJournalEditorProps> = ({ place 
 
   if (isEditing) {
     return (
-      <div className="bg-card-surface border border-fine-border rounded-2xl overflow-hidden flex flex-col">
-        <div className="bg-canvas-black/50 border-b border-fine-border px-4 py-2 flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-textMuted">Markdown Editor</span>
+      <div className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col">
+        <div className="bg-canvas/50 border-b border-border px-4 py-2 flex items-center justify-between">
+          <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Markdown Editor</span>
           <div className="flex items-center gap-2">
             <button 
               onClick={handleCancel}
-              className="p-1.5 text-textMuted hover:text-white rounded-md transition-colors"
+              className="p-1.5 text-text-muted hover:text-text-main rounded-md transition-colors"
               disabled={isSaving}
             >
               <X className="w-4 h-4" />
@@ -64,7 +64,7 @@ export const TravelJournalEditor: React.FC<TravelJournalEditorProps> = ({ place 
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full h-64 bg-transparent text-white p-4 focus:outline-none resize-y font-mono text-sm leading-relaxed"
+          className="w-full h-64 bg-transparent text-text-main p-4 focus:outline-none resize-y font-mono text-sm leading-relaxed"
           placeholder="# Travel Journal\n\n## Things to do\n- [ ] Visit museum\n\n## Local food\n- Try the street food"
         />
       </div>
@@ -72,27 +72,27 @@ export const TravelJournalEditor: React.FC<TravelJournalEditorProps> = ({ place 
   }
 
   return (
-    <div className="bg-card-surface border border-fine-border rounded-2xl p-5 group relative">
+    <div className="bg-card border border-border rounded-2xl p-5 group relative">
       <button
         onClick={() => setIsEditing(true)}
-        className="absolute top-4 right-4 p-2 rounded-full bg-white/5 text-textMuted opacity-0 group-hover:opacity-100 transition-opacity hover:text-white hover:bg-white/10"
+        className="absolute top-4 right-4 p-2 rounded-full deboss text-text-muted opacity-0 group-hover:opacity-100 transition-opacity hover:text-text-main hover:opacity-80"
       >
         <Edit3 className="w-4 h-4" />
       </button>
       
       {content ? (
-        <div className="prose prose-invert prose-sm max-w-none text-textMuted prose-headings:text-white prose-a:text-accent-blue prose-strong:text-white">
+        <div className="prose prose-invert prose-sm max-w-none text-text-muted prose-headings:text-text-main prose-a:text-accent-blue prose-strong:text-text-main">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {content}
           </ReactMarkdown>
         </div>
       ) : (
         <div className="text-center py-6">
-          <p className="text-textMuted text-sm mb-2">No journal entries yet.</p>
-          <p className="text-textMuted/60 text-xs mb-4">Jot down memories, itineraries, or things to do.</p>
+          <p className="text-text-muted text-sm mb-2">No journal entries yet.</p>
+          <p className="text-text-muted/60 text-xs mb-4">Jot down memories, itineraries, or things to do.</p>
           <button
             onClick={() => setIsEditing(true)}
-            className="text-xs px-4 py-2 rounded-full border border-fine-border text-white hover:bg-white/5 transition-colors"
+            className="text-xs px-4 py-2 rounded-full border border-border text-text-main hover:opacity-80 transition-colors"
           >
             Start Writing
           </button>

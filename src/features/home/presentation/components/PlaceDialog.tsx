@@ -108,37 +108,40 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
         {error && <div className="p-3 bg-error/10 text-error rounded-lg text-sm">{error}</div>}
         
         <div>
-          <label className="block text-sm font-medium text-textMuted mb-1">Place Name</label>
+          <label className="block text-sm font-medium text-text-muted mb-1">Place Name</label>
           <input
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors"
             placeholder="e.g. Kyoto"
             autoFocus
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-textMuted mb-1">Country</label>
+          <label className="block text-sm font-medium text-text-muted mb-1">Country</label>
           <select
             value={countryId}
             onChange={e => setCountryId(e.target.value)}
-            className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors appearance-none"
+            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors appearance-none"
           >
             {countries.map(c => (
               <option key={c.id} value={c.id}>{c.flag} {c.name}</option>
             ))}
+            {countryId && !countries.find(c => c.id === countryId) && (
+              <option value={countryId}>Loading country...</option>
+            )}
           </select>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-textMuted mb-1">Category</label>
+            <label className="block text-sm font-medium text-text-muted mb-1">Category</label>
             <select
               value={category}
               onChange={e => setCategory(e.target.value)}
-              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors appearance-none"
+              className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors appearance-none"
             >
               <option value="City">City</option>
               <option value="Nature">Nature</option>
@@ -148,11 +151,11 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-textMuted mb-1">Status</label>
+            <label className="block text-sm font-medium text-text-muted mb-1">Status</label>
             <select
               value={status}
               onChange={e => setStatus(e.target.value as PlaceStatus)}
-              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors appearance-none"
+              className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors appearance-none"
             >
               <option value="planning">Planning</option>
               <option value="booked">Booked</option>
@@ -163,14 +166,14 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-textMuted mb-1">Priority</label>
+          <label className="block text-sm font-medium text-text-muted mb-1">Priority</label>
           <div className="flex gap-2">
             {(['low', 'medium', 'high'] as Priority[]).map(p => (
               <button
                 key={p}
                 type="button"
                 onClick={() => setPriority(p)}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium border ${priority === p ? 'border-white text-white bg-white/10' : 'border-fine-border text-textMuted hover:bg-white/5'} transition-colors capitalize`}
+                className={`flex-1 py-2 rounded-lg text-sm font-medium border ${priority === p ? 'border-white text-text-main deboss' : 'border-border text-text-muted hover:opacity-80'} transition-colors capitalize`}
               >
                 {p}
               </button>
@@ -180,24 +183,24 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-textMuted mb-1">Latitude</label>
+            <label className="block text-sm font-medium text-text-muted mb-1">Latitude</label>
             <input
               type="number"
               step="any"
               value={latitude}
               onChange={e => setLatitude(e.target.value)}
-              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+              className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors"
               placeholder="e.g. 35.0116"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-textMuted mb-1">Longitude</label>
+            <label className="block text-sm font-medium text-text-muted mb-1">Longitude</label>
             <input
               type="number"
               step="any"
               value={longitude}
               onChange={e => setLongitude(e.target.value)}
-              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+              className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors"
               placeholder="e.g. 135.7681"
             />
           </div>
@@ -205,31 +208,31 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-textMuted mb-1">Visit Date (Optional)</label>
+            <label className="block text-sm font-medium text-text-muted mb-1">Visit Date (Optional)</label>
             <input
               type="date"
               value={visitDate}
               onChange={e => setVisitDate(e.target.value)}
-              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors [color-scheme:dark]"
+              className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors [color-scheme:dark]"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-textMuted mb-1">Future Trip Date (Optional)</label>
+            <label className="block text-sm font-medium text-text-muted mb-1">Future Trip Date (Optional)</label>
             <input
               type="date"
               value={futureTripDate}
               onChange={e => setFutureTripDate(e.target.value)}
-              className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors [color-scheme:dark]"
+              className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors [color-scheme:dark]"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-textMuted mb-1">Brief Description (Optional)</label>
+          <label className="block text-sm font-medium text-text-muted mb-1">Brief Description (Optional)</label>
           <textarea
             value={notes}
             onChange={e => setNotes(e.target.value)}
-            className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors min-h-[80px] resize-none"
+            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors min-h-[80px] resize-none"
             placeholder="Add any specific notes or ideas... (You can add full markdown notes in the place details screen)"
           />
         </div>
@@ -238,13 +241,13 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg font-medium text-white hover:bg-white/5 transition-colors focus:outline-none"
+            className="px-4 py-2 rounded-lg font-medium text-text-main hover:opacity-80 transition-colors focus:outline-none"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 rounded-lg font-medium text-white transition-colors focus:outline-none"
+            className="px-4 py-2 rounded-lg font-medium text-text-main transition-colors focus:outline-none"
             style={{ backgroundColor: 'var(--color-active-accent)' }}
           >
             {placeToEdit ? 'Save Changes' : 'Add Place'}

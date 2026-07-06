@@ -12,13 +12,13 @@ export function LoadingIndicator({ fullScreen, message, className }: LoadingIndi
   const content = (
     <div className={cn("flex flex-col items-center justify-center gap-3", className)}>
       <Loader2 className="w-8 h-8 text-active-accent animate-spin" />
-      {message && <p className="text-sm text-textMuted font-medium">{message}</p>}
+      {message && <p className="text-sm text-text-muted font-medium">{message}</p>}
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-canvas-black/80 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-canvas/80 backdrop-blur-sm">
         {content}
       </div>
     );

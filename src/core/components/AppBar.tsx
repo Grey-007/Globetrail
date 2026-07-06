@@ -12,7 +12,7 @@ interface AppBarProps {
 export function AppBar({ title, leading, trailing, className, centerTitle = false }: AppBarProps) {
   return (
     <header className={cn(
-      "sticky top-0 z-30 bg-canvas-black/80 backdrop-blur-md border-b border-fine-border px-4 h-16 pt-safe",
+      "sticky top-0 z-30 bg-canvas/80 backdrop-blur-md border-b border-border px-4 h-16 pt-safe",
       className
     )}>
       <div className="h-full flex items-center justify-between">

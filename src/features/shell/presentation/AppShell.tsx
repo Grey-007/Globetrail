@@ -26,7 +26,6 @@ function TabContainer({ children, isActive }: { children: React.ReactNode, isAct
 }
 
 export default function AppShell() {
-  const { amoledMode, accentColor } = useThemeStore();
   const location = useLocation();
 
   const navItems = useMemo(() => [
@@ -44,15 +43,11 @@ export default function AppShell() {
     <div 
       className={cn(
         "min-h-screen w-full flex flex-col font-sans transition-colors duration-300",
-        amoledMode ? "bg-canvas-black text-white" : "bg-slate-gray text-white"
       )}
-      style={{
-        '--color-active-accent': `var(--color-accent-${accentColor})`
-      } as React.CSSProperties}
     >
       <div className="flex-1 relative overflow-hidden">
         {/* Tab Screens - Always mounted to preserve state */}
-        <React.Suspense fallback={<div className="h-full w-full bg-canvas-black" />}>
+        <React.Suspense fallback={<div className="h-full w-full bg-canvas" />}>
           <TabContainer isActive={isTabActive('/')}>
             <HomeScreen />
           </TabContainer>
@@ -78,7 +73,7 @@ export default function AppShell() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.2 }}
-              className="absolute inset-0 z-20 bg-canvas-black overflow-y-auto"
+              className="absolute inset-0 z-20 bg-canvas overflow-y-auto"
             >
               <Outlet />
             </motion.div>
@@ -93,9 +88,9 @@ export default function AppShell() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 250 }}
-            className="absolute bottom-0 w-full z-30 border-t border-fine-border bg-canvas-black/90 backdrop-blur-md pb-safe"
+            className="absolute bottom-4 left-4 right-4 z-30 pb-safe"
           >
-            <div className="flex items-center justify-around h-16 max-w-md mx-auto px-4 relative">
+            <div className="flex items-center justify-around h-16 max-w-md mx-auto px-2 relative emboss rounded-full bg-card">
               {navItems.map((item) => {
                 const active = isTabActive(item.to);
                 return (
@@ -104,34 +99,22 @@ export default function AppShell() {
                     to={item.to}
                     className={cn(
                       "flex flex-col items-center justify-center w-14 h-full gap-1 transition-colors relative z-10",
-                      active ? "text-white" : "text-textMuted hover:text-white/80"
+                      active ? "text-accent" : "text-text-muted hover:text-text-main"
                     )}
                   >
                     <item.icon 
-                      className="w-6 h-6 transition-transform duration-300" 
+                      className="w-5 h-5 transition-transform duration-300" 
                       strokeWidth={active ? 2.5 : 2}
                       style={{ 
-                        color: active ? `var(--color-accent-${accentColor})` : undefined,
                         transform: active ? 'translateY(-2px)' : 'none'
                       }}
                     />
                     <span className={cn(
                       "text-[10px] font-medium tracking-wide transition-all duration-300",
                       active ? "opacity-100" : "opacity-0 scale-75 absolute -bottom-4"
-                    )}
-                    style={{ color: active ? `var(--color-accent-${accentColor})` : undefined }}
-                    >
+                    )}>
                       {item.label}
                     </span>
-                    
-                    {/* Active Indicator */}
-                    {active && (
-                      <motion.div 
-                        layoutId="activeTabIndicator"
-                        className="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-[2px] rounded-b-full bg-[var(--color-active-accent)] shadow-[0_0_8px_var(--color-active-accent)]"
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      />
-                    )}
                   </NavLink>
                 );
               })}
@@ -142,3 +125,4 @@ export default function AppShell() {
     </div>
   );
 }
+

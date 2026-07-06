@@ -4,9 +4,10 @@ import { AppBar, SearchBar, EmptyState } from '@/core/components';
 import { Search, Loader2, MapPin, Plus, Navigation, Globe2 } from 'lucide-react';
 import { useHomeData } from '@/features/home/presentation/hooks/useHomeData';
 import { PlaceDialog } from '@/features/home/presentation/components/PlaceDialog';
-import { useThemeStore } from '@/core/theme/useThemeStore';
 import { useSearchStore } from './state/useSearchStore';
 import { useNavigate } from 'react-router-dom';
+import { locationRepository } from '@/core/di/injection';
+import { getFlagEmoji } from '@/core/utils/countryUtils';
 
 export interface GlobalSearchResult {
   place_id: number;
@@ -14,6 +15,10 @@ export interface GlobalSearchResult {
   lon: string;
   display_name: string;
   type: string;
+  address?: {
+    country?: string;
+    country_code?: string;
+  };
 }
 
 export default function SearchScreen() {
@@ -24,7 +29,6 @@ export default function SearchScreen() {
   const [error, setError] = useState('');
   
   const { data: countries } = useHomeData();
-  const { accentColor } = useThemeStore();
   const navigate = useNavigate();
   
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -52,7 +56,7 @@ export default function SearchScreen() {
       setIsLoadingGlobal(true);
       setError('');
       try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(debouncedQuery)}&format=json&limit=10`, {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(debouncedQuery)}&format=json&limit=10&addressdetails=1`, {
           headers: {
             'User-Agent': 'GlobeTrailApp/1.0'
           }
@@ -73,8 +77,34 @@ export default function SearchScreen() {
     return () => { isMounted = false; };
   }, [debouncedQuery]);
 
-  const handleAdd = (result: GlobalSearchResult) => {
+  const [defaultCountryId, setDefaultCountryId] = useState<string | undefined>(undefined);
+
+  const handleAdd = async (result: GlobalSearchResult) => {
     setSelectedResult(result);
+    let resolvedCountryId = undefined;
+    
+    if (result.address?.country) {
+      const countryName = result.address.country;
+      const existingCountry = countries.find(c => c.name.toLowerCase() === countryName.toLowerCase());
+      
+      if (existingCountry) {
+        resolvedCountryId = existingCountry.id;
+      } else {
+        // Auto-create country
+        const countryCode = result.address.country_code || 'xx';
+        const res = await locationRepository.createCountry({
+          countryName: countryName,
+          isoCode: countryCode.toUpperCase(),
+          flagEmoji: getFlagEmoji(countryCode),
+          continent: 'Unknown'
+        });
+        if (res.success) {
+          resolvedCountryId = res.data.uuid;
+        }
+      }
+    }
+    
+    setDefaultCountryId(resolvedCountryId);
     setIsDialogOpen(true);
   };
   
@@ -109,11 +139,11 @@ export default function SearchScreen() {
               {/* Local Results */}
               {isLocalSearching ? (
                  <div className="flex justify-center py-6">
-                   <Loader2 className="w-6 h-6 text-textMuted animate-spin" />
+                   <Loader2 className="w-6 h-6 text-text-muted animate-spin" />
                  </div>
               ) : hasLocalResults ? (
                 <div>
-                  <h3 className="text-sm font-semibold text-textMuted uppercase tracking-wider mb-3">Saved Places</h3>
+                  <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">Saved Places</h3>
                   <div className="space-y-3">
                     {localResults.countries.map(c => (
                       <motion.div 
@@ -121,15 +151,15 @@ export default function SearchScreen() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         onClick={() => navigate('/')}
-                        className="bg-card-surface border border-fine-border rounded-2xl p-4 flex items-center justify-between gap-4 cursor-pointer hover:border-white/20 transition-colors"
+                        className="deboss rounded-2xl p-4 flex items-center justify-between gap-4 cursor-pointer hover:border-border transition-colors"
                       >
                         <div className="flex items-start gap-3 flex-1 overflow-hidden">
-                          <div className="mt-1 bg-white/5 p-2 rounded-full text-textMuted">
+                          <div className="mt-1 emboss p-2 rounded-full text-text-muted">
                             <Globe2 className="w-4 h-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-white font-medium text-sm truncate">{c.countryName}</h4>
-                            <p className="text-textMuted text-xs truncate mt-0.5">Country</p>
+                            <h4 className="text-text-main font-medium text-sm truncate">{c.countryName}</h4>
+                            <p className="text-text-muted text-xs truncate mt-0.5">Country</p>
                           </div>
                         </div>
                       </motion.div>
@@ -140,15 +170,15 @@ export default function SearchScreen() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         onClick={() => navigate(`/place/${p.uuid}`)}
-                        className="bg-card-surface border border-fine-border rounded-2xl p-4 flex items-center justify-between gap-4 cursor-pointer hover:border-white/20 transition-colors"
+                        className="deboss rounded-2xl p-4 flex items-center justify-between gap-4 cursor-pointer hover:border-border transition-colors"
                       >
                         <div className="flex items-start gap-3 flex-1 overflow-hidden">
-                          <div className="mt-1 bg-white/5 p-2 rounded-full text-textMuted">
+                          <div className="mt-1 emboss p-2 rounded-full text-text-muted">
                             <Navigation className="w-4 h-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-white font-medium text-sm truncate">{p.name}</h4>
-                            <p className="text-textMuted text-xs truncate mt-0.5">{p.category} • {p.status}</p>
+                            <h4 className="text-text-main font-medium text-sm truncate">{p.name}</h4>
+                            <p className="text-text-muted text-xs truncate mt-0.5">{p.category} • {p.status}</p>
                           </div>
                         </div>
                       </motion.div>
@@ -159,15 +189,15 @@ export default function SearchScreen() {
 
               {/* Global Results */}
               <div>
-                <h3 className="text-sm font-semibold text-textMuted uppercase tracking-wider mb-3">Global Search</h3>
+                <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider mb-3">Global Search</h3>
                 {isLoadingGlobal ? (
                   <div className="flex justify-center py-6">
-                    <Loader2 className="w-6 h-6 text-textMuted animate-spin" />
+                    <Loader2 className="w-6 h-6 text-text-muted animate-spin" />
                   </div>
                 ) : error ? (
                   <div className="text-center py-4 text-error text-sm">{error}</div>
                 ) : results.length === 0 ? (
-                  <div className="text-center py-4 text-textMuted text-sm">No global places found.</div>
+                  <div className="text-center py-4 text-text-muted text-sm">No global places found.</div>
                 ) : (
                   <div className="space-y-3">
                     {results.map((result) => (
@@ -175,21 +205,20 @@ export default function SearchScreen() {
                         key={result.place_id}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="bg-card-surface border border-fine-border rounded-2xl p-4 flex items-center justify-between gap-4"
+                        className="deboss rounded-2xl p-4 flex items-center justify-between gap-4"
                       >
                         <div className="flex items-start gap-3 flex-1 overflow-hidden">
-                          <div className="mt-1 bg-white/5 p-2 rounded-full text-textMuted">
+                          <div className="mt-1 emboss p-2 rounded-full text-text-muted">
                             <MapPin className="w-4 h-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-white font-medium text-sm truncate">{result.display_name.split(',')[0]}</h4>
-                            <p className="text-textMuted text-xs truncate mt-0.5">{result.display_name.split(',').slice(1).join(',').trim()}</p>
+                            <h4 className="text-text-main font-medium text-sm truncate">{result.display_name.split(',')[0]}</h4>
+                            <p className="text-text-muted text-xs truncate mt-0.5">{result.display_name.split(',').slice(1).join(',').trim()}</p>
                           </div>
                         </div>
                         <button
                           onClick={() => handleAdd(result)}
-                          className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-transform active:scale-95 text-canvas-black"
-                          style={{ backgroundColor: `var(--color-accent-${accentColor})` }}
+                          className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-transform active:scale-95 text-canvas bg-accent"
                         >
                           <Plus className="w-3.5 h-3.5" />
                           Add
@@ -208,6 +237,7 @@ export default function SearchScreen() {
         isOpen={isDialogOpen} 
         onClose={() => setIsDialogOpen(false)} 
         countries={countries || []}
+        defaultCountryId={defaultCountryId}
         initialData={selectedResult ? {
           name: selectedResult.display_name.split(',')[0],
           latitude: selectedResult.lat,

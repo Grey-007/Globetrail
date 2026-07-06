@@ -50,18 +50,18 @@ export const PlaceCard: React.FC<{
   return (
     <div 
       onClick={() => navigate(`/place/${place.id}`)}
-      className="flex items-center gap-3 p-3 rounded-xl border border-fine-border bg-canvas-black relative overflow-hidden transition-colors hover:bg-white/[0.02] group cursor-pointer"
+      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-canvas relative overflow-hidden transition-colors hover:opacity-80 group cursor-pointer"
     >
       {/* Priority Indicator */}
       <div className={cn("absolute left-0 top-0 bottom-0 w-1", getPriorityColor())} />
       
       {/* Thumbnail / Icon */}
-      <div className="w-12 h-12 rounded-lg bg-fine-border/50 flex items-center justify-center shrink-0 text-textMuted">
+      <div className="w-12 h-12 rounded-lg bg-fine-border/50 flex items-center justify-center shrink-0 text-text-muted">
         {getCategoryIcon()}
       </div>
 
       <div className="flex-1 min-w-0">
-        <h4 className="font-medium text-white truncate">{place.name}</h4>
+        <h4 className="font-medium text-text-main truncate">{place.name}</h4>
         <div className="flex items-center gap-2 mt-1">
           <button 
             onClick={toggleStatus}
@@ -69,12 +69,12 @@ export const PlaceCard: React.FC<{
               "text-[10px] px-2 py-0.5 rounded-full font-medium tracking-wide uppercase transition-colors focus:outline-none",
               place.status === 'visited' 
                 ? 'bg-success/20 text-success hover:bg-success/30' 
-                : 'bg-fine-border text-textMuted hover:bg-white/10'
+                : 'bg-fine-border text-text-muted hover:opacity-80'
             )}
           >
             {place.status}
           </button>
-          <span className="text-xs text-textMuted flex items-center gap-1">
+          <span className="text-xs text-text-muted flex items-center gap-1">
             {place.category}
           </span>
         </div>
@@ -83,14 +83,14 @@ export const PlaceCard: React.FC<{
       <div className="flex items-center gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
         <button 
           onClick={(e) => { e.stopPropagation(); onEdit(place); }}
-          className="p-2 text-textMuted hover:text-white transition-colors focus:outline-none"
+          className="p-2 text-text-muted hover:text-text-main transition-colors focus:outline-none"
           aria-label="Edit place"
         >
           <Pencil className="w-4 h-4" />
         </button>
         <button 
           onClick={(e) => { e.stopPropagation(); onDelete(place); }}
-          className="p-2 text-textMuted hover:text-error transition-colors focus:outline-none"
+          className="p-2 text-text-muted hover:text-error transition-colors focus:outline-none"
           aria-label="Delete place"
         >
           <Trash2 className="w-4 h-4" />
@@ -99,7 +99,7 @@ export const PlaceCard: React.FC<{
 
       <button 
         onClick={toggleFavorite}
-        className="p-2 -mr-1 text-textMuted transition-colors focus:outline-none"
+        className="p-2 -mr-1 text-text-muted transition-colors focus:outline-none"
         aria-label={place.isFavorite ? "Remove from favorites" : "Add to favorites"}
       >
         <Heart 

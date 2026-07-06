@@ -1,32 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Custom Color Tokens */
-  --color-canvas-black: #000000;
-  --color-slate-gray: #121212;
-  --color-card-surface: #0A0A0A;
-  --color-fine-border: #222222;
-  
-  --color-accent-steel: #8E8E93;
-  --color-accent-ice: #A1C4FD;
-  --color-accent-sage: #8FBC8F;
-  --color-accent-coral: #FF7F50;
-  --color-accent-teal: #008080;
+  /* Theme color mapping */
+  --color-canvas: var(--color-bg);
+  --color-card: var(--color-surface);
+  --color-border: var(--color-stroke);
+  --color-text-main: var(--color-text);
+  --color-text-muted: var(--color-text-dim);
+  --color-accent: var(--color-gold);
 }
 
 @layer base {
-  body {
-    @apply bg-canvas-black text-white font-sans antialiased selection:bg-accent-steel/30;
+  :root {
+    /* Default to Light Theme */
+    --color-bg: #EAE3D2;
+    --color-surface: #DFD5C1;
+    --color-stroke: #C5BAA4;
+    --color-text: #2C241B;
+    --color-text-dim: #5C4F41;
+    --color-gold: #8B6B3D;
+    
+    /* Shadows */
+    --shadow-emboss: 
+      inset 1px 1px 2px rgba(255, 255, 255, 0.4), 
+      2px 2px 5px rgba(0, 0, 0, 0.1),
+      -1px -1px 3px rgba(255, 255, 255, 0.2);
+    --shadow-deboss: 
+      inset 2px 2px 5px rgba(0, 0, 0, 0.1), 
+      inset -1px -1px 3px rgba(255, 255, 255, 0.3);
   }
 
-  /* When AMOLED is disabled, we will apply a class to the html or body tag to shift to slate gray */
-  .theme-slate body {
-    @apply bg-slate-gray;
+  .dark-theme {
+    --color-bg: #111111;
+    --color-surface: #181818;
+    --color-stroke: #2A2A2A;
+    --color-text: #E0E0E0;
+    --color-text-dim: #888888;
+    --color-gold: #C5A059;
+
+    --shadow-emboss: 
+      inset 1px 1px 1px rgba(255, 255, 255, 0.05), 
+      2px 2px 8px rgba(0, 0, 0, 0.5),
+      -1px -1px 4px rgba(255, 255, 255, 0.02);
+    --shadow-deboss: 
+      inset 2px 2px 6px rgba(0, 0, 0, 0.6), 
+      inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+  }
+
+  body {
+    @apply bg-canvas text-text-main font-sans antialiased;
+    /* subtle noise texture can be added via a pseudo-element if needed */
   }
 }
+
+.emboss {
+  box-shadow: var(--shadow-emboss);
+  border: 1px solid var(--color-stroke);
+}
+
+.deboss {
+  box-shadow: var(--shadow-deboss);
+  border: 1px solid var(--color-stroke);
+}
+

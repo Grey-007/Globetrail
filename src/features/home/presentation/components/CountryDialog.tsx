@@ -61,24 +61,24 @@ export const CountryDialog: React.FC<CountryDialogProps> = ({ isOpen, onClose, c
         {error && <div className="p-3 bg-error/10 text-error rounded-lg text-sm">{error}</div>}
         
         <div>
-          <label className="block text-sm font-medium text-textMuted mb-1">Country Name</label>
+          <label className="block text-sm font-medium text-text-muted mb-1">Country Name</label>
           <input
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors"
             placeholder="e.g. Japan"
             autoFocus
           />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-textMuted mb-1">Flag Emoji (Optional)</label>
+          <label className="block text-sm font-medium text-text-muted mb-1">Flag Emoji (Optional)</label>
           <input
             type="text"
             value={flag}
             onChange={e => setFlag(e.target.value)}
-            className="w-full bg-card-surface border border-fine-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-text-main focus:outline-none focus:border-white transition-colors"
             placeholder="e.g. 🇯🇵"
           />
         </div>
@@ -87,13 +87,13 @@ export const CountryDialog: React.FC<CountryDialogProps> = ({ isOpen, onClose, c
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg font-medium text-white hover:bg-white/5 transition-colors focus:outline-none"
+            className="px-4 py-2 rounded-lg font-medium text-text-main hover:opacity-80 transition-colors focus:outline-none"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 rounded-lg font-medium text-white transition-colors focus:outline-none"
+            className="px-4 py-2 rounded-lg font-medium text-text-main transition-colors focus:outline-none"
             style={{ backgroundColor: 'var(--color-active-accent)' }}
           >
             {countryToEdit ? 'Save Changes' : 'Add Country'}

@@ -61,12 +61,12 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-white tracking-wide flex items-center gap-2">
-          <Camera className="w-5 h-5 text-textMuted" /> Photos
+        <h3 className="text-lg font-semibold text-text-main tracking-wide flex items-center gap-2">
+          <Camera className="w-5 h-5 text-text-muted" /> Photos
         </h3>
         <button 
           onClick={handleAddPhoto}
-          className="text-sm text-textMuted hover:text-white transition-colors"
+          className="text-sm text-text-muted hover:text-text-main transition-colors"
         >
           + Add
         </button>
@@ -81,15 +81,15 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
       </div>
 
       {photos.length === 0 ? (
-        <div className="bg-card-surface border border-dashed border-fine-border rounded-xl p-8 flex flex-col items-center justify-center text-center">
-          <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
-            <Camera className="w-8 h-8 text-textMuted/50" />
+        <div className="bg-card border border-dashed border-border rounded-xl p-8 flex flex-col items-center justify-center text-center">
+          <div className="w-16 h-16 rounded-full deboss flex items-center justify-center mb-4">
+            <Camera className="w-8 h-8 text-text-muted/50" />
           </div>
-          <p className="text-white text-sm font-medium mb-1">No photos yet</p>
-          <p className="text-textMuted text-xs mb-4">Capture your favorite moments.</p>
+          <p className="text-text-main text-sm font-medium mb-1">No photos yet</p>
+          <p className="text-text-muted text-xs mb-4">Capture your favorite moments.</p>
           <button 
             onClick={handleAddPhoto}
-            className="text-xs font-medium px-4 py-2 rounded-full border border-fine-border text-white hover:bg-white/5 transition-colors"
+            className="text-xs font-medium px-4 py-2 rounded-full border border-border text-text-main hover:opacity-80 transition-colors"
           >
             Upload Photos
           </button>
@@ -99,7 +99,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
           {photos.map(photo => (
             <div 
               key={photo.uuid} 
-              className="group aspect-square bg-card-surface border border-fine-border rounded-xl relative overflow-hidden cursor-pointer"
+              className="group aspect-square bg-card border border-border rounded-xl relative overflow-hidden cursor-pointer"
               onClick={() => setFullscreenPhoto(photo.filePath)}
             >
               <img 
@@ -111,7 +111,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                 <button 
                   onClick={(e) => { e.stopPropagation(); setFullscreenPhoto(photo.filePath); }}
-                  className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20"
+                  className="p-2 rounded-full deboss text-text-main hover:opacity-80"
                 >
                   <Maximize2 className="w-4 h-4" />
                 </button>
@@ -123,7 +123,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
                 </button>
               </div>
               {photo.isCover && (
-                <div className="absolute top-2 left-2 bg-canvas-black/80 px-2 py-0.5 rounded text-[10px] font-bold text-white uppercase tracking-wider backdrop-blur-md border border-white/10">
+                <div className="absolute top-2 left-2 bg-canvas/80 px-2 py-0.5 rounded text-[10px] font-bold text-text-main uppercase tracking-wider backdrop-blur-md border border-border">
                   Cover
                 </div>
               )}
@@ -131,7 +131,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
           ))}
           <div 
             onClick={handleAddPhoto}
-            className="aspect-square bg-card-surface border border-dashed border-fine-border rounded-xl flex flex-col items-center justify-center text-textMuted hover:bg-white/[0.02] transition-colors cursor-pointer"
+            className="aspect-square bg-card border border-dashed border-border rounded-xl flex flex-col items-center justify-center text-text-muted hover:opacity-80 transition-colors cursor-pointer"
           >
             <Camera className="w-6 h-6 mb-2 opacity-50" />
             <span className="text-xs font-medium">Add Photo</span>
@@ -141,7 +141,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
 
       {fullscreenPhoto && (
         <div 
-          className="fixed inset-0 z-50 bg-canvas-black/95 flex flex-col items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-canvas/95 flex flex-col items-center justify-center p-4"
           onClick={() => setFullscreenPhoto(null)}
         >
           <img 

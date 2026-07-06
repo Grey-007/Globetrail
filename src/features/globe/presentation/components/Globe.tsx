@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import GlobeGL from 'react-globe.gl';
-import { useThemeStore, getAccentColorHex } from '@/core/theme/useThemeStore';
+import { useThemeStore } from '@/core/theme/useThemeStore';
 import { Place } from '@/features/home/domain/entities/Place';
 import { GlobePlace } from '../hooks/useGlobeData';
 import { useWindowSize } from '@/core/hooks/useWindowSize';
@@ -14,23 +14,28 @@ interface GlobeComponentProps {
 
 export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filteredPlaces = places }) => {
   const globeEl = useRef<any>(null);
-  const { accentColor } = useThemeStore();
+  const { mode } = useThemeStore();
   const { width, height } = useWindowSize();
   
-  const accentHex = getAccentColorHex(accentColor);
+  const accentHex = mode === 'dark' ? '#C5A059' : '#8B6B3D';
   
   // Custom marker generator
   const getMarkerHtml = (place: GlobePlace) => {
     const el = document.createElement('div');
-    const isFavorite = place.isFavorite;
-    const color = isFavorite ? accentHex : '#ffffff';
+    const color = accentHex;
     
-    // Create a beautiful pin
+    const svgIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="${color}" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));">
+        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
+        <circle cx="12" cy="10" r="3" fill="#000"></circle>
+      </svg>
+    `;
+
     el.innerHTML = `
-      <div class="cursor-pointer" style="width: 24px; height: 24px; transform: translate(-50%, -50%); position: relative;">
-        <div class="animate-ping" style="position: absolute; inset: 0; border-radius: 50%; opacity: 0.2; background-color: ${color};"></div>
-        <div style="position: absolute; inset: 4px; border-radius: 50%; background-color: ${color}; box-shadow: 0 0 10px rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center;">
-          <div style="width: 6px; height: 6px; border-radius: 50%; background-color: #000;"></div>
+      <div class="cursor-pointer group" style="position: relative; transform: translate(-50%, -100%);">
+        ${svgIcon}
+        <div class="opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-card border border-border backdrop-blur-sm text-text-main text-[10px] font-medium rounded whitespace-nowrap pointer-events-none z-50">
+          ${place.name}
         </div>
       </div>
     `;
@@ -89,37 +94,37 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
         ref={globeEl}
         width={width}
         height={height - 64} // subtract bottom nav height roughly
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+        globeImageUrl={mode === 'dark' ? "//unpkg.com/three-globe/example/img/earth-dark.jpg" : "//unpkg.com/three-globe/example/img/earth-day.jpg"}
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-        backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
+        backgroundImageUrl={mode === 'dark' ? "//unpkg.com/three-globe/example/img/night-sky.png" : undefined}
         htmlElementsData={filteredPlaces}
         htmlElement={getMarkerHtml as any}
         htmlLat="latitude"
         htmlLng="longitude"
         htmlAltitude={0.01}
         atmosphereColor={accentHex}
-        atmosphereAltitude={0.15}
+        atmosphereAltitude={0.25}
       />
       
       {/* Floating Controls */}
       <div className="absolute right-4 bottom-24 flex flex-col gap-3 pointer-events-auto">
         <button 
           onClick={handleZoomIn}
-          className="w-12 h-12 bg-card-surface/80 backdrop-blur-md border border-fine-border rounded-full flex items-center justify-center text-textMuted hover:text-white transition-colors shadow-lg focus:outline-none"
+          className="w-12 h-12 emboss rounded-full flex items-center justify-center text-text-muted hover:text-text-main transition-colors focus:outline-none"
           aria-label="Zoom In"
         >
           <ZoomIn className="w-5 h-5" />
         </button>
         <button 
           onClick={handleZoomOut}
-          className="w-12 h-12 bg-card-surface/80 backdrop-blur-md border border-fine-border rounded-full flex items-center justify-center text-textMuted hover:text-white transition-colors shadow-lg focus:outline-none"
+          className="w-12 h-12 emboss rounded-full flex items-center justify-center text-text-muted hover:text-text-main transition-colors focus:outline-none"
           aria-label="Zoom Out"
         >
           <ZoomOut className="w-5 h-5" />
         </button>
         <button 
           onClick={handleReset}
-          className="w-12 h-12 bg-card-surface/80 backdrop-blur-md border border-fine-border rounded-full flex items-center justify-center text-textMuted hover:text-white transition-colors shadow-lg focus:outline-none"
+          className="w-12 h-12 emboss rounded-full flex items-center justify-center text-text-muted hover:text-text-main transition-colors focus:outline-none"
           aria-label="Reset View"
         >
           <LocateFixed className="w-5 h-5" />
@@ -128,3 +133,4 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
     </div>
   );
 };
+

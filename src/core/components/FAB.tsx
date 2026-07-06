@@ -1,6 +1,5 @@
 import React from 'react';
 import { cn } from '@/core/utils/cn';
-import { useThemeStore } from '@/core/theme/useThemeStore';
 
 type FABProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   icon: React.ReactNode;
@@ -16,8 +15,6 @@ export function FAB({
   className,
   ...props 
 }: FABProps) {
-  const { accentColor } = useThemeStore();
-  
   const positionClasses = {
     'bottom-right': 'bottom-24 right-4',
     'bottom-left': 'bottom-24 left-4',
@@ -29,11 +26,10 @@ export function FAB({
       className={cn(
         "fixed z-40 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95",
         label ? "px-5 py-4 rounded-full" : "w-14 h-14 rounded-2xl",
-        "bg-[var(--color-active-accent)] text-canvas-black",
+        "bg-accent text-canvas",
         positionClasses[position],
         className
       )}
-      style={{ '--color-active-accent': `var(--color-accent-${accentColor})` } as React.CSSProperties}
       {...props}
     >
       {icon}

@@ -42,7 +42,7 @@ export function BottomSheet({ isOpen, onClose, title, children, className }: Bot
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-canvas-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-canvas/80 backdrop-blur-sm"
             onClick={onClose}
           />
           <motion.div
@@ -51,16 +51,16 @@ export function BottomSheet({ isOpen, onClose, title, children, className }: Bot
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className={cn(
-              "fixed bottom-0 left-0 right-0 z-50 bg-card-surface border-t border-fine-border rounded-t-3xl max-h-[90vh] flex flex-col",
+              "fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border rounded-t-3xl max-h-[90vh] flex flex-col",
               className
             )}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-fine-border/50">
-              <h2 className="text-lg font-semibold text-white px-2">{title}</h2>
+            <div className="flex-shrink-0 flex items-center justify-between p-4 border-b border-border/50">
+              <h2 className="text-lg font-semibold text-text-main px-2">{title}</h2>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full text-textMuted hover:text-white hover:bg-white/5 transition-colors focus:outline-none"
+                className="p-2 rounded-full text-text-muted hover:text-text-main hover:opacity-80 transition-colors focus:outline-none"
               >
                 <X className="w-5 h-5" />
               </button>

@@ -8,17 +8,19 @@ import { useEffect, useState } from 'react';
 import { initDatabase } from '@/core/di/injection';
 
 export default function App() {
-  const { amoledMode } = useThemeStore();
+  const { mode } = useThemeStore();
   const [isDbInitialized, setIsDbInitialized] = useState(false);
 
   useEffect(() => {
-    // Sync the AMOLED mode to the document body class for tailwind styling overrides
-    if (!amoledMode) {
-      document.documentElement.classList.add('theme-slate');
+    // Sync the mode to the document body class for tailwind styling overrides
+    if (mode === 'light') {
+      document.documentElement.classList.add('light-theme');
+      document.documentElement.classList.remove('dark-theme');
     } else {
-      document.documentElement.classList.remove('theme-slate');
+      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.remove('light-theme');
     }
-  }, [amoledMode]);
+  }, [mode]);
 
   useEffect(() => {
     initDatabase().then(() => setIsDbInitialized(true));

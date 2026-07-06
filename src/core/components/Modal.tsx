@@ -29,12 +29,12 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
             transition={{ type: "spring", bounce: 0, duration: 0.3 }}
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md z-50 px-4"
           >
-            <div className="bg-slate-gray border border-fine-border rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
-              <div className="px-6 py-4 border-b border-fine-border flex items-center justify-between shrink-0">
-                <h2 className="text-lg font-semibold text-white tracking-wide">{title}</h2>
+            <div className="bg-slate-gray border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+              <div className="px-6 py-4 border-b border-border flex items-center justify-between shrink-0">
+                <h2 className="text-lg font-semibold text-text-main tracking-wide">{title}</h2>
                 <button
                   onClick={onClose}
-                  className="p-1 rounded-full text-textMuted hover:text-white hover:bg-white/10 transition-colors focus:outline-none"
+                  className="p-1 rounded-full text-text-muted hover:text-text-main hover:opacity-80 transition-colors focus:outline-none"
                 >
                   <X className="w-5 h-5" />
                 </button>
