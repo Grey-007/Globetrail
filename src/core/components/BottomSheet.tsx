@@ -42,7 +42,7 @@ export function BottomSheet({ isOpen, onClose, title, children, className }: Bot
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-canvas"
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
           />
           <motion.div

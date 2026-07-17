@@ -89,6 +89,23 @@ export default function HomeScreen() {
         </div>
       </div>
 
+      {/* View All Places Button */}
+      <button 
+        onClick={() => navigate("/list")}
+        className="w-full py-4 px-5 mb-10 emboss rounded-2xl flex items-center justify-between text-text-main group active:scale-[0.98] transition-transform focus:outline-none"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 rounded-full deboss flex items-center justify-center text-accent">
+            <MapPin className="w-5 h-5" />
+          </div>
+          <div className="text-left">
+            <span className="font-semibold block text-sm tracking-wide">VIEW ALL PLACES</span>
+            <span className="text-xs text-text-muted">{allPlaces.length} saved destinations</span>
+          </div>
+        </div>
+        <ChevronRight className="w-5 h-5 text-text-muted group-hover:text-text-main transition-colors" />
+      </button>
+
       {/* Recent Places */}
       {recentPlaces.length > 0 && (
         <div className="mb-10">

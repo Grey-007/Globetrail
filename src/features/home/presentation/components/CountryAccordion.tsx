@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, Plus, Pencil, Trash2 } from 'lucide-react';
 import { cn } from '@/core/utils/cn';
 import type { CountryViewModel, PlaceViewModel } from '../hooks/useHomeData';
@@ -65,33 +64,31 @@ export const CountryAccordion: React.FC<{
         </div>
       </div>
       
-      <AnimatePresence initial={false}>
-        {isExpanded && (
-          <motion.div 
-            initial={{ height: 0, opacity: 0 }} 
-            animate={{ height: 'auto', opacity: 1 }} 
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="overflow-hidden"
-          >
-            <div className="p-4 pt-0 flex flex-col gap-3">
-              {country.places.map(place => (
-                <PlaceCard 
-                  key={place.id} 
-                  place={place} 
-                  onEdit={onEditPlace} 
-                  onDelete={onDeletePlace} 
-                />
-              ))}
-              {country.places.length === 0 && (
-                <div className="text-center py-6 text-sm text-text-muted border border-dashed border-border rounded-xl">
-                  No places added yet.
-                </div>
-              )}
-            </div>
-          </motion.div>
+      <div 
+        className={cn(
+          "grid transition-all duration-300 ease-in-out",
+          isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         )}
-      </AnimatePresence>
+      >
+        <div className="overflow-hidden">
+          <div className="p-4 pt-0 flex flex-col gap-3">
+            {country.places.map(place => (
+              <PlaceCard 
+                key={place.id} 
+                place={place} 
+                onEdit={onEditPlace} 
+                onDelete={onDeletePlace} 
+              />
+            ))}
+            {country.places.length === 0 && (
+              <div className="text-center py-6 text-sm text-text-muted border border-dashed border-border rounded-xl">
+                No places added yet.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };
