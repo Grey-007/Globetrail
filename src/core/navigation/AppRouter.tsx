@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AppShell from '@/features/shell/presentation/AppShell';
 import PlaceDetailsScreen from '@/features/places/presentation/PlaceDetailsScreen';
+import ListScreen from '@/features/home/presentation/ListScreen';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: "place/:id",
         element: <PlaceDetailsScreen />
+      },
+      {
+        path: "list",
+        element: <ListScreen />
       }
     ]
   }

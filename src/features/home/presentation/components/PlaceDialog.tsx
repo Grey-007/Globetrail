@@ -105,7 +105,7 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={placeToEdit ? 'Edit Place' : 'Add Place'}>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <div className="p-3 bg-error/10 text-error rounded-lg text-sm">{error}</div>}
+        {error && <div className="p-3 deboss bg-canvas text-error rounded-lg text-sm">{error}</div>}
         
         <div>
           <label className="block text-sm font-medium text-text-muted mb-1">Place Name</label>
@@ -173,7 +173,7 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
                 key={p}
                 type="button"
                 onClick={() => setPriority(p)}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium border ${priority === p ? 'border-white text-text-main deboss' : 'border-border text-text-muted hover:opacity-80'} transition-colors capitalize`}
+                className={`flex-1 py-2 rounded-lg text-sm font-medium border ${priority === p ? 'border-white text-text-main deboss' : 'border-border text-text-muted hover:text-accent'} transition-colors capitalize`}
               >
                 {p}
               </button>
@@ -241,7 +241,7 @@ export const PlaceDialog: React.FC<PlaceDialogProps> = ({ isOpen, onClose, place
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-lg font-medium text-text-main hover:opacity-80 transition-colors focus:outline-none"
+            className="px-4 py-2 rounded-lg font-medium text-text-main hover:text-accent transition-colors focus:outline-none"
           >
             Cancel
           </button>

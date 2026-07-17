@@ -64,17 +64,17 @@ export default function HomeScreen() {
         className="emboss rounded-3xl p-5 mb-10 relative overflow-hidden cursor-pointer group"
         onClick={() => navigate('/globe')}
       >
-        <div className="w-full h-48 rounded-xl deboss mb-4 relative overflow-hidden bg-black/10 dark:deboss">
-          <div className="absolute inset-0 opacity-40 bg-[url('https://unpkg.com/three-globe/example/img/earth-topology.png')] bg-cover bg-center mix-blend-overlay"></div>
+        <div className="w-full h-48 rounded-xl deboss mb-4 relative overflow-hidden deboss bg-canvas">
+          <div className="absolute inset-0 "></div>
           {/* Simple pins */}
-          <div className="absolute top-1/3 left-1/3 w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]"></div>
-          <div className="absolute top-1/4 right-1/3 w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
-          <div className="absolute bottom-1/3 right-1/4 w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.8)]"></div>
+          <div className="absolute top-1/3 left-1/3 w-2 h-2 rounded-full bg-green-500 "></div>
+          <div className="absolute top-1/4 right-1/3 w-2 h-2 rounded-full bg-red-500 "></div>
+          <div className="absolute bottom-1/3 right-1/4 w-2 h-2 rounded-full bg-blue-500 "></div>
+          <div className="absolute bottom-1/4 left-1/4 w-2 h-2 rounded-full bg-yellow-500 "></div>
           {/* Compass Graphic Placeholder */}
-          <div className="absolute bottom-2 left-2 w-16 h-16 rounded-full emboss flex items-center justify-center border-2 border-accent/20 bg-card">
+          <div className="absolute bottom-2 left-2 w-16 h-16 rounded-full emboss flex items-center justify-center border-2 border-accent bg-card">
             <div className="w-2 h-12 bg-accent rotate-45 rounded-full relative">
-              <div className="absolute top-0 w-full h-1/2 bg-red-500/80 rounded-t-full"></div>
+              <div className="absolute top-0 w-full h-1/2 bg-red-500 rounded-t-full"></div>
             </div>
           </div>
         </div>
@@ -94,14 +94,14 @@ export default function HomeScreen() {
         <div className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-text-main font-medium text-sm tracking-wider uppercase">Recent Places</h2>
-            <button className="text-text-main text-sm">View All</button>
+            <button className="text-text-main text-sm" onClick={() => navigate('/list')}>View All</button>
           </div>
           <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6">
             {recentPlaces.map(place => (
               <div key={place.id} className="min-w-[160px] w-[160px] emboss rounded-2xl p-2 shrink-0 cursor-pointer" onClick={() => navigate(`/place/${place.id}`)}>
-                <div className="w-full h-32 rounded-xl deboss mb-3 overflow-hidden relative bg-black/10 dark:deboss">
-                   <div className="absolute top-2 right-2 p-1.5 rounded-full bg-black/20 backdrop-blur-md">
-                     <Heart className={`w-4 h-4 ${place.isFavorite ? 'fill-white text-text-main' : 'text-text-main/80'}`} />
+                <div className="w-full h-32 rounded-xl deboss mb-3 overflow-hidden relative deboss bg-canvas">
+                   <div className="absolute top-2 right-2 p-1.5 rounded-full bg-canvas emboss">
+                     <Heart className={`w-4 h-4 ${place.isFavorite ? 'fill-white text-text-main' : 'text-text-muted'}`} />
                    </div>
                 </div>
                 <div className="px-2 pb-2">
@@ -123,7 +123,7 @@ export default function HomeScreen() {
         <div className="mb-10">
            <div className="flex items-center justify-between mb-4">
             <h2 className="text-text-main font-medium text-sm tracking-wider uppercase">Upcoming Plans</h2>
-            <button className="text-text-main text-sm">View All</button>
+            <button className="text-text-main text-sm" onClick={() => navigate('/list')}>View All</button>
           </div>
           <div className="emboss rounded-3xl p-4 flex items-center relative overflow-hidden" onClick={() => navigate(`/place/${nextTrip.id}`)}>
             <div className="deboss rounded-2xl p-3 flex flex-col items-center justify-center w-20 shrink-0 border-r border-dashed border-border mr-4">
@@ -138,9 +138,9 @@ export default function HomeScreen() {
                 <span>👥 2</span>
               </div>
             </div>
-            <div className="w-16 h-16 rounded-xl deboss bg-black/10 shrink-0"></div>
+            <div className="w-16 h-16 rounded-xl deboss bg-canvas deboss shrink-0"></div>
             {/* Buckle graphic */}
-            <div className="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center border-l border-border bg-black/5">
+            <div className="absolute right-0 top-0 bottom-0 w-8 flex items-center justify-center border-l border-border bg-card">
                <div className="w-4 h-6 border-2 border-accent rounded-sm"></div>
             </div>
           </div>

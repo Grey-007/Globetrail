@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
 import GlobeGL from 'react-globe.gl';
 import { useThemeStore } from '@/core/theme/useThemeStore';
-import { Place } from '@/features/home/domain/entities/Place';
 import { GlobePlace } from '../hooks/useGlobeData';
 import { useWindowSize } from '@/core/hooks/useWindowSize';
 import { LocateFixed, ZoomIn, ZoomOut } from 'lucide-react';
+import * as THREE from 'three';
 
 interface GlobeComponentProps {
   places: GlobePlace[];
@@ -16,8 +16,18 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
   const globeEl = useRef<any>(null);
   const { mode } = useThemeStore();
   const { width, height } = useWindowSize();
+  const [countries, setCountries] = useState({ features: [] });
+  
+  useEffect(() => {
+    fetch('https://raw.githubusercontent.com/vasturiano/react-globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
+      .then(res => res.json())
+      .then(setCountries);
+  }, []);
   
   const accentHex = mode === 'dark' ? '#C5A059' : '#8B6B3D';
+  const canvasHex = mode === 'dark' ? '#111111' : '#EAE3D2';
+  const surfaceHex = mode === 'dark' ? '#181818' : '#DFD5C1';
+  const borderHex = mode === 'dark' ? '#2A2A2A' : '#C5BAA4';
   
   // Custom marker generator
   const getMarkerHtml = (place: GlobePlace) => {
@@ -25,16 +35,15 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
     const color = accentHex;
     
     const svgIcon = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="${color}" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="${color}" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" >
         <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
         <circle cx="12" cy="10" r="3" fill="#000"></circle>
       </svg>
     `;
-
     el.innerHTML = `
       <div class="cursor-pointer group" style="position: relative; transform: translate(-50%, -100%);">
         ${svgIcon}
-        <div class="opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-card border border-border backdrop-blur-sm text-text-main text-[10px] font-medium rounded whitespace-nowrap pointer-events-none z-50">
+        <div class="opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-card border border-border  text-text-main text-[10px] font-medium rounded whitespace-nowrap pointer-events-none z-50">
           ${place.name}
         </div>
       </div>
@@ -65,8 +74,10 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
       controls.autoRotateSpeed = 0.5;
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
+      
+      // Adjust globe material to match skeumorphic theme
     }
-  }, []);
+  }, [surfaceHex]);
 
   const handleZoomIn = () => {
     if (globeEl.current) {
@@ -88,22 +99,31 @@ export const Globe: React.FC<GlobeComponentProps> = ({ places, onPinClick, filte
     }
   };
 
+  const material = new THREE.MeshPhongMaterial({
+    color: surfaceHex,
+    emissive: surfaceHex,
+    emissiveIntensity: 0.1,
+  });
+
   return (
     <div className="w-full h-full cursor-move relative">
       <GlobeGL
         ref={globeEl}
         width={width}
         height={height - 64} // subtract bottom nav height roughly
-        globeImageUrl={mode === 'dark' ? "//unpkg.com/three-globe/example/img/earth-dark.jpg" : "//unpkg.com/three-globe/example/img/earth-day.jpg"}
-        bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
-        backgroundImageUrl={mode === 'dark' ? "//unpkg.com/three-globe/example/img/night-sky.png" : undefined}
+        backgroundColor={canvasHex}
+        globeMaterial={material}
+        showGlobe={true}
+        showAtmosphere={false}
+        polygonsData={countries.features}
+        polygonCapColor={() => canvasHex}
+        polygonSideColor={() => borderHex}
+        polygonStrokeColor={() => borderHex}
         htmlElementsData={filteredPlaces}
         htmlElement={getMarkerHtml as any}
         htmlLat="latitude"
         htmlLng="longitude"
         htmlAltitude={0.01}
-        atmosphereColor={accentHex}
-        atmosphereAltitude={0.25}
       />
       
       {/* Floating Controls */}

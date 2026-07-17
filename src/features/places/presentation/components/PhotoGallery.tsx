@@ -83,13 +83,13 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
       {photos.length === 0 ? (
         <div className="bg-card border border-dashed border-border rounded-xl p-8 flex flex-col items-center justify-center text-center">
           <div className="w-16 h-16 rounded-full deboss flex items-center justify-center mb-4">
-            <Camera className="w-8 h-8 text-text-muted/50" />
+            <Camera className="w-8 h-8 text-border" />
           </div>
           <p className="text-text-main text-sm font-medium mb-1">No photos yet</p>
           <p className="text-text-muted text-xs mb-4">Capture your favorite moments.</p>
           <button 
             onClick={handleAddPhoto}
-            className="text-xs font-medium px-4 py-2 rounded-full border border-border text-text-main hover:opacity-80 transition-colors"
+            className="text-xs font-medium px-4 py-2 rounded-full border border-border text-text-main hover:text-accent transition-colors"
           >
             Upload Photos
           </button>
@@ -105,25 +105,25 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
               <img 
                 src={photo.filePath} 
                 alt="Place" 
-                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
+                className="w-full h-full object-cover  transition-opacity" 
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+              <div className="absolute inset-0 bg-card opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                 <button 
                   onClick={(e) => { e.stopPropagation(); setFullscreenPhoto(photo.filePath); }}
-                  className="p-2 rounded-full deboss text-text-main hover:opacity-80"
+                  className="p-2 rounded-full deboss text-text-main hover:text-accent"
                 >
                   <Maximize2 className="w-4 h-4" />
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); handleDelete(photo.uuid); }}
-                  className="p-2 rounded-full bg-error/20 text-error hover:bg-error/30"
+                  className="p-2 rounded-full deboss bg-canvas text-error hover:text-red-700"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
               {photo.isCover && (
-                <div className="absolute top-2 left-2 bg-canvas/80 px-2 py-0.5 rounded text-[10px] font-bold text-text-main uppercase tracking-wider backdrop-blur-md border border-border">
+                <div className="absolute top-2 left-2 bg-canvas px-2 py-0.5 rounded text-[10px] font-bold text-text-main uppercase tracking-wider border border-border">
                   Cover
                 </div>
               )}
@@ -131,7 +131,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
           ))}
           <div 
             onClick={handleAddPhoto}
-            className="aspect-square bg-card border border-dashed border-border rounded-xl flex flex-col items-center justify-center text-text-muted hover:opacity-80 transition-colors cursor-pointer"
+            className="aspect-square bg-card border border-dashed border-border rounded-xl flex flex-col items-center justify-center text-text-muted hover:text-accent transition-colors cursor-pointer"
           >
             <Camera className="w-6 h-6 mb-2 opacity-50" />
             <span className="text-xs font-medium">Add Photo</span>
@@ -141,13 +141,13 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({ placeUuid }) => {
 
       {fullscreenPhoto && (
         <div 
-          className="fixed inset-0 z-50 bg-canvas/95 flex flex-col items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-canvas flex flex-col items-center justify-center p-4"
           onClick={() => setFullscreenPhoto(null)}
         >
           <img 
             src={fullscreenPhoto} 
             alt="Fullscreen" 
-            className="max-w-full max-h-full object-contain shadow-2xl rounded-sm"
+            className="max-w-full max-h-full object-contain emboss border-4 border-card rounded-sm"
           />
         </div>
       )}

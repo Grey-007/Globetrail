@@ -32,7 +32,7 @@ export default function StatisticsScreen() {
         {/* Progress Section */}
         <section>
           <div className="emboss rounded-3xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-6 opacity-10">
+            <div className="absolute top-0 right-0 p-6 text-border">
               <Globe2 className="w-24 h-24" />
             </div>
             <h3 className="text-sm font-medium tracking-wide text-text-muted mb-6 uppercase flex items-center gap-2">

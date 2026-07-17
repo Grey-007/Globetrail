@@ -57,7 +57,7 @@ export default function GlobeScreen() {
               className={cn(
                 "px-4 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-colors whitespace-nowrap",
                 filterType === f 
-                  ? "bg-accent text-canvas shadow-lg" 
+                  ? "bg-accent text-canvas emboss" 
                   : "emboss text-text-muted hover:text-text-main"
               )}
             >
@@ -117,7 +117,7 @@ export default function GlobeScreen() {
               onClick={() => {
                 navigate(`/place/${selectedPlace.uuid}`);
               }}
-              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-medium bg-accent text-canvas transition-transform active:scale-95 focus:outline-none shadow-lg"
+              className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-medium bg-accent text-canvas transition-transform active:scale-95 focus:outline-none emboss"
             >
               <Navigation className="w-5 h-5" />
               Open Details

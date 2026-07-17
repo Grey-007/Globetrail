@@ -49,7 +49,7 @@ export const CountryAccordion: React.FC<{
           </span>
           <button
             onClick={() => onAddPlace(country.id)}
-            className="p-1 rounded-full deboss text-text-main hover:opacity-80 transition-colors focus:outline-none ml-2"
+            className="p-1 rounded-full deboss text-text-main hover:text-accent transition-colors focus:outline-none ml-2"
             aria-label={`Add place to ${country.name}`}
           >
             <Plus className="w-5 h-5" />

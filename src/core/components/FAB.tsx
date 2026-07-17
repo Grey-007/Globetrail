@@ -24,7 +24,7 @@ export function FAB({
   return (
     <button
       className={cn(
-        "fixed z-40 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95",
+        "fixed z-40 flex items-center justify-center gap-2 emboss transition-all duration-300 active:scale-95",
         label ? "px-5 py-4 rounded-full" : "w-14 h-14 rounded-2xl",
         "bg-accent text-canvas",
         positionClasses[position],

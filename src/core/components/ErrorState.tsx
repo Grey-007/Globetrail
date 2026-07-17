@@ -13,7 +13,7 @@ interface ErrorStateProps {
 export function ErrorState({ title = "Something went wrong", message, onRetry, className, fullScreen }: ErrorStateProps) {
   const content = (
     <div className={cn("flex flex-col items-center justify-center text-center p-6", className)}>
-      <div className="w-16 h-16 mb-4 rounded-full bg-error/10 flex items-center justify-center text-error">
+      <div className="w-16 h-16 mb-4 rounded-full deboss bg-canvas flex items-center justify-center text-error">
         <AlertTriangle className="w-8 h-8" />
       </div>
       <h3 className="text-lg font-semibold text-text-main mb-2">{title}</h3>
@@ -22,7 +22,7 @@ export function ErrorState({ title = "Something went wrong", message, onRetry, c
       {onRetry && (
         <button 
           onClick={onRetry}
-          className="flex items-center gap-2 px-4 py-2 rounded-full deboss hover:opacity-80 transition-colors text-text-main font-medium text-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-full deboss hover:text-accent transition-colors text-text-main font-medium text-sm"
         >
           <RefreshCcw className="w-4 h-4" />
           Try Again

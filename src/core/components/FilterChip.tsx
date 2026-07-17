@@ -14,7 +14,7 @@ export function FilterChip({ label, selected, icon, className, ...props }: Filte
       className={cn(
         "flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-colors focus:outline-none whitespace-nowrap",
         selected 
-          ? "bg-accent text-canvas shadow-inner" 
+          ? "bg-accent text-canvas deboss" 
           : "emboss text-text-muted hover:text-text-main",
         className
       )}

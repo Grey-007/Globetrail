@@ -22,13 +22,13 @@ export const AchievementsList = ({ achievements }: { achievements: Achievement[]
             "flex items-center gap-4 p-4 rounded-2xl transition-colors",
             achievement.unlocked 
               ? "emboss" 
-              : "deboss opacity-60"
+              : "deboss bg-card text-text-muted"
           )}
         >
           <div 
             className={cn(
               "w-12 h-12 rounded-full flex items-center justify-center shrink-0",
-              achievement.unlocked ? "deboss text-accent" : "bg-black/5 grayscale text-text-muted"
+              achievement.unlocked ? "deboss text-accent" : "deboss bg-card text-text-muted grayscale"
             )}
           >
             {achievement.unlocked ? <Award className="w-6 h-6" /> : <Lock className="w-5 h-5" />}

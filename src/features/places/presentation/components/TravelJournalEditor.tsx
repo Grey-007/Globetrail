@@ -41,7 +41,7 @@ export const TravelJournalEditor: React.FC<TravelJournalEditorProps> = ({ place 
   if (isEditing) {
     return (
       <div className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col">
-        <div className="bg-canvas/50 border-b border-border px-4 py-2 flex items-center justify-between">
+        <div className="bg-canvas border-b border-border px-4 py-2 flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Markdown Editor</span>
           <div className="flex items-center gap-2">
             <button 
@@ -53,7 +53,7 @@ export const TravelJournalEditor: React.FC<TravelJournalEditorProps> = ({ place 
             </button>
             <button 
               onClick={handleSave}
-              className="px-3 py-1.5 bg-success/10 text-success rounded-md text-xs font-bold tracking-wide flex items-center gap-1.5 transition-colors hover:bg-success/20"
+              className="px-3 py-1.5 deboss bg-canvas text-success rounded-md text-xs font-bold tracking-wide flex items-center gap-1.5 transition-colors hover:text-accent"
               disabled={isSaving}
             >
               <Check className="w-4 h-4" />
@@ -75,7 +75,7 @@ export const TravelJournalEditor: React.FC<TravelJournalEditorProps> = ({ place 
     <div className="bg-card border border-border rounded-2xl p-5 group relative">
       <button
         onClick={() => setIsEditing(true)}
-        className="absolute top-4 right-4 p-2 rounded-full deboss text-text-muted opacity-0 group-hover:opacity-100 transition-opacity hover:text-text-main hover:opacity-80"
+        className="absolute top-4 right-4 p-2 rounded-full deboss text-text-muted opacity-0 group-hover:opacity-100 transition-opacity hover:text-text-main hover:text-accent"
       >
         <Edit3 className="w-4 h-4" />
       </button>
@@ -89,10 +89,10 @@ export const TravelJournalEditor: React.FC<TravelJournalEditorProps> = ({ place 
       ) : (
         <div className="text-center py-6">
           <p className="text-text-muted text-sm mb-2">No journal entries yet.</p>
-          <p className="text-text-muted/60 text-xs mb-4">Jot down memories, itineraries, or things to do.</p>
+          <p className="text-border text-xs mb-4">Jot down memories, itineraries, or things to do.</p>
           <button
             onClick={() => setIsEditing(true)}
-            className="text-xs px-4 py-2 rounded-full border border-border text-text-main hover:opacity-80 transition-colors"
+            className="text-xs px-4 py-2 rounded-full border border-border text-text-main hover:text-accent transition-colors"
           >
             Start Writing
           </button>

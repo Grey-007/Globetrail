@@ -27,7 +27,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       <div className="flex gap-3 justify-end">
         <button
           onClick={onClose}
-          className="px-4 py-2 rounded-lg font-medium text-text-main hover:opacity-80 transition-colors focus:outline-none"
+          className="px-4 py-2 rounded-lg font-medium text-text-main hover:text-accent transition-colors focus:outline-none"
         >
           Cancel
         </button>
@@ -38,7 +38,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
           }}
           className={cn(
             "px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none text-text-main",
-            isDestructive ? "bg-error hover:bg-error/90" : "bg-accent-steel hover:bg-accent-steel/90" // Normally use dynamic accent
+            isDestructive ? "emboss bg-canvas text-error" : "emboss bg-canvas text-accent" // Normally use dynamic accent
           )}
           style={!isDestructive ? { backgroundColor: 'var(--color-active-accent)' } : undefined}
         >

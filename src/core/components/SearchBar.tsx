@@ -17,7 +17,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search...', classNam
       </div>
       <input
         type="text"
-        className="block w-full pl-10 pr-10 py-3 bg-canvas border border-border rounded-xl text-text-main placeholder-text-muted/60 focus:outline-none focus:border-white transition-colors"
+        className="block w-full pl-10 pr-10 py-3 bg-canvas border border-border rounded-xl text-text-main placeholder-text-muted focus:outline-none focus:border-white transition-colors"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

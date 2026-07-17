@@ -34,9 +34,8 @@ export default function PlaceDetailsScreen() {
       <div className="min-h-screen bg-canvas text-text-main flex flex-col">
         <div className="flex-1 flex flex-col items-center justify-center gap-4 text-text-muted">
           <p>Place not found.</p>
-          <button onClick={() => navigate(-1)} className="px-4 py-2 deboss rounded-lg hover:opacity-80 transition-colors">
-            Go Back
-          </button>
+          <button onClick={() => navigate(-1)} className="px-4 py-2 deboss rounded-lg hover:text-accent transition-colors">
+            Go Back</button>
         </div>
       </div>
     );
@@ -62,6 +61,17 @@ export default function PlaceDetailsScreen() {
     return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
   };
 
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: place.name,
+          text: `Check out ${place.name} in ${country.countryName}!`,
+          url: window.location.href,
+        });
+      }
+    } catch (err) {}
+  };
   const getPriorityColor = () => {
     switch (place.priority) {
       case 'high': return 'bg-error text-error';
@@ -81,8 +91,7 @@ export default function PlaceDetailsScreen() {
             onClick={() => navigate(-1)} 
             className="p-2 -ml-2 rounded-full text-text-muted hover:text-text-main transition-colors focus:outline-none"
           >
-            <ArrowLeft className="w-6 h-6" />
-          </button>
+            <ArrowLeft className="w-6 h-6" /></button>
         }
         trailing={
           <div className="flex items-center gap-1">
@@ -93,20 +102,17 @@ export default function PlaceDetailsScreen() {
               <Heart 
                 className={cn("w-5 h-5 transition-transform active:scale-90", place.isFavorite && "fill-current")} 
                 style={{ color: place.isFavorite ? 'var(--color-active-accent)' : undefined }}
-              />
-            </button>
+              /></button>
             <button 
-              onClick={() => {}} 
+              onClick={handleShare} 
               className="p-2 rounded-full text-text-muted hover:text-text-main transition-colors focus:outline-none"
             >
-              <Share className="w-5 h-5" />
-            </button>
+              <Share className="w-5 h-5" /></button>
             <button 
               onClick={() => setIsEditOpen(true)} 
               className="p-2 rounded-full text-text-muted hover:text-text-main transition-colors focus:outline-none"
             >
-              <Edit3 className="w-5 h-5" />
-            </button>
+              <Edit3 className="w-5 h-5" /></button>
           </div>
         }
       />
@@ -164,13 +170,10 @@ export default function PlaceDetailsScreen() {
                Tags
              </h3>
              <div className="flex flex-wrap gap-2">
-               <button className="text-xs px-3 py-1 rounded-full border border-dashed border-border text-text-muted hover:text-text-main transition-colors">
-                 + Add Tag
-               </button>
              </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/50">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
             <div>
               <span className="text-xs text-text-muted flex items-center gap-1.5 mb-1">
                 <Calendar className="w-3.5 h-3.5" /> Added
@@ -238,17 +241,17 @@ export default function PlaceDetailsScreen() {
             </h3>
           </div>
           <div className="h-48 bg-card border border-border rounded-xl flex flex-col items-center justify-center text-text-muted relative overflow-hidden group">
-            <Map className="w-8 h-8 mb-3 opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+            <Map className="w-8 h-8 mb-3 text-border group-hover:text-text-muted transition-opacity duration-500" />
             <span className="text-sm font-medium z-10 relative">Map Integration Coming Soon</span>
             
             {/* Coordinates if available */}
             {(place.latitude !== 0 || place.longitude !== 0) && (
-              <div className="absolute bottom-3 left-4 text-xs font-mono opacity-60">
+              <div className="absolute bottom-3 left-4 text-xs font-mono text-text-muted">
                 {place.latitude.toFixed(4)}, {place.longitude.toFixed(4)}
               </div>
             )}
             
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20 pointer-events-none" />
+            <div className="absolute inset-0 hidden pointer-events-none" />
           </div>
         </motion.section>
 
@@ -262,13 +265,10 @@ export default function PlaceDetailsScreen() {
             <h3 className="text-lg font-semibold text-text-main tracking-wide flex items-center gap-2">
               <Paperclip className="w-5 h-5 text-text-muted" /> Attachments
             </h3>
-            <button className="text-sm text-text-muted hover:text-text-main transition-colors">
-              + Add
-            </button>
           </div>
           <div className="bg-card border border-dashed border-border rounded-xl p-6 text-center">
             <p className="text-text-muted text-sm mb-2">No documents attached.</p>
-            <p className="text-text-muted/60 text-xs">PDFs, tickets, and bookings coming soon.</p>
+            <p className="text-border text-xs">PDFs, tickets, and bookings coming soon.</p>
           </div>
         </motion.section>
 
@@ -281,10 +281,9 @@ export default function PlaceDetailsScreen() {
         >
           <button
             onClick={() => setIsConfirmOpen(true)}
-            className="w-full py-4 rounded-xl border border-error/20 bg-error/5 text-error font-medium hover:bg-error/10 hover:border-error/30 transition-colors focus:outline-none flex items-center justify-center gap-2"
+            className="w-full py-4 rounded-xl border deboss bg-canvas border-error text-error font-medium hover:text-red-700 transition-colors focus:outline-none flex items-center justify-center gap-2"
           >
-            <Trash2 className="w-4 h-4" /> Delete Place
-          </button>
+            <Trash2 className="w-4 h-4" /> Delete Place</button>
         </motion.section>
 
       </main>

@@ -50,13 +50,13 @@ export const PlaceCard: React.FC<{
   return (
     <div 
       onClick={() => navigate(`/place/${place.id}`)}
-      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-canvas relative overflow-hidden transition-colors hover:opacity-80 group cursor-pointer"
+      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-canvas relative overflow-hidden transition-colors hover:border-accent group cursor-pointer"
     >
       {/* Priority Indicator */}
       <div className={cn("absolute left-0 top-0 bottom-0 w-1", getPriorityColor())} />
       
       {/* Thumbnail / Icon */}
-      <div className="w-12 h-12 rounded-lg bg-fine-border/50 flex items-center justify-center shrink-0 text-text-muted">
+      <div className="w-12 h-12 rounded-lg deboss bg-canvas flex items-center justify-center shrink-0 text-text-muted">
         {getCategoryIcon()}
       </div>
 
@@ -68,8 +68,8 @@ export const PlaceCard: React.FC<{
             className={cn(
               "text-[10px] px-2 py-0.5 rounded-full font-medium tracking-wide uppercase transition-colors focus:outline-none",
               place.status === 'visited' 
-                ? 'bg-success/20 text-success hover:bg-success/30' 
-                : 'bg-fine-border text-text-muted hover:opacity-80'
+                ? 'deboss bg-canvas text-success hover:text-accent' 
+                : 'bg-fine-border text-text-muted hover:border-accent'
             )}
           >
             {place.status}

@@ -26,14 +26,17 @@
     --color-text-dim: #5C4F41;
     --color-gold: #8B6B3D;
     
-    /* Shadows */
+    /* Solid shadows for skeumorphism */
+    --color-shadow-light: #F8F4EC;
+    --color-shadow-dark: #C9BFA8;
+
     --shadow-emboss: 
-      inset 1px 1px 2px rgba(255, 255, 255, 0.4), 
-      2px 2px 5px rgba(0, 0, 0, 0.1),
-      -1px -1px 3px rgba(255, 255, 255, 0.2);
+      inset 1px 1px 2px var(--color-shadow-light), 
+      2px 2px 5px var(--color-shadow-dark),
+      -1px -1px 3px var(--color-shadow-light);
     --shadow-deboss: 
-      inset 2px 2px 5px rgba(0, 0, 0, 0.1), 
-      inset -1px -1px 3px rgba(255, 255, 255, 0.3);
+      inset 2px 2px 5px var(--color-shadow-dark), 
+      inset -1px -1px 3px var(--color-shadow-light);
   }
 
   .dark-theme {
@@ -44,13 +47,16 @@
     --color-text-dim: #888888;
     --color-gold: #C5A059;
 
+    --color-shadow-light: #222222;
+    --color-shadow-dark: #000000;
+
     --shadow-emboss: 
-      inset 1px 1px 1px rgba(255, 255, 255, 0.05), 
-      2px 2px 8px rgba(0, 0, 0, 0.5),
-      -1px -1px 4px rgba(255, 255, 255, 0.02);
+      inset 1px 1px 1px var(--color-shadow-light), 
+      3px 3px 8px var(--color-shadow-dark),
+      -1px -1px 3px var(--color-shadow-light);
     --shadow-deboss: 
-      inset 2px 2px 6px rgba(0, 0, 0, 0.6), 
-      inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+      inset 3px 3px 6px var(--color-shadow-dark), 
+      inset -1px -1px 3px var(--color-shadow-light);
   }
 
   body {
